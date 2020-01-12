@@ -1,0 +1,43 @@
+package com.eir.gdr
+
+import io.vertx.core.Vertx
+import io.vertx.core.json.Json
+import io.vertx.ext.jdbc.JDBCClient
+import io.vertx.ext.web.Router
+import io.vertx.ext.web.RoutingContext
+
+object Routes {
+    private fun addCorsHeaders(context: RoutingContext): RoutingContext {
+        context.response().putHeader("Access-Control-Allow-Headers", "Content-Type")
+        context.response().putHeader("Access-Control-Allow-Origin", "http://localhost:3000")
+        return context
+    }
+
+    private fun <T> mapToResponse(ctx: RoutingContext, item: T) {
+        ctx.response().putHeader("Content-Type", "application/json")
+        ctx.response().end(Json.encode(item))
+    }
+
+    fun routes(vertx: Vertx, client: JDBCClient): Router {
+        val router = Router.router(vertx)
+
+        // Adding cors headers
+        router.options().handler { ctx ->
+            addCorsHeaders(ctx)
+            ctx.response().statusCode = 200
+            ctx.response().end()
+        }
+
+        // Adding cors headers
+        router.get().handler { ctx ->
+            addCorsHeaders(ctx)
+            ctx.next()
+        }
+
+        router.mountSubRouter("/", StaticRouter.routes(vertx))
+
+//        router.route().handler(staticHandler())
+
+        return router
+    }
+}
