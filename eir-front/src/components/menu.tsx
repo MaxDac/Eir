@@ -14,6 +14,7 @@ import {
     DropdownItem,
     NavbarText
 } from 'reactstrap';
+import {Link} from "react-router-dom";
 
 const Example = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -35,14 +36,18 @@ const Example = () => {
                         </NavItem>
                         <UncontrolledDropdown nav inNavbar>
                             <DropdownToggle nav caret>
-                                Options
+                                Manuale
                             </DropdownToggle>
                             <DropdownMenu right>
                                 <DropdownItem>
-                                    Option 1
+                                    <Link to={'/help/characteristics'}>
+                                        Caratteristiche
+                                    </Link>
                                 </DropdownItem>
                                 <DropdownItem>
-                                    Option 2
+                                    <Link to={'/help/abilities'}>
+                                        Conoscenze
+                                    </Link>
                                 </DropdownItem>
                                 <DropdownItem divider />
                                 <DropdownItem>

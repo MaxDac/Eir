@@ -27,7 +27,10 @@ fun JDBCClient.getConnectionAsync(): Future<SQLConnection> =
     asFuture<SQLConnection> { h -> this.getConnection(h) }
 
 fun SQLConnection.queryAsync(sql: String): Future<ResultSet> =
-    asFuture<ResultSet> { h -> this.query(sql, h) }
+    asFuture<ResultSet> { h ->
+        val result = this.query(sql, h)
+        result
+    }
 
 fun JDBCClient.queryAsync(sql: String): Future<ResultSet> =
     this.getConnectionAsync()

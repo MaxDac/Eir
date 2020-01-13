@@ -1,0 +1,9 @@
+<mat-progress-bar mode="indeterminate" *ngIf="!loaded"></mat-progress-bar>
+<mat-tab-group>
+  <mat-tab label="Marziali">
+    <app-characteristics-tab [characteristics]="martials" *ngIf="loaded"></app-characteristics-tab>
+  </mat-tab>
+  <mat-tab label="Mentali">
+    <app-characteristics-tab [characteristics]="mentals" *ngIf="loaded"></app-characteristics-tab>
+  </mat-tab>
+</mat-tab-group>

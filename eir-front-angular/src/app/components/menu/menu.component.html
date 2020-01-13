@@ -1,0 +1,36 @@
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item [matMenuTriggerFor]="manual">
+        <mat-icon>dialpad</mat-icon>
+        <span>Manuale</span>
+      </button>
+      <button mat-menu-item disabled>
+        <mat-icon>voicemail</mat-icon>
+        <span>Check voice mail</span>
+      </button>
+      <button mat-menu-item>
+        <mat-icon>notifications_off</mat-icon>
+        <span>Disable alerts</span>
+      </button>
+    </mat-menu>
+
+    <mat-menu #manual="matMenu">
+      <button mat-menu-item [routerLink]="['/help/characteristics']">
+        <mat-icon>dialpad</mat-icon>
+        <span>Caratteristiche</span>
+      </button>
+      <button mat-menu-item [routerLink]="['/help/abilities']">
+        <mat-icon>voicemail</mat-icon>
+        <span>Conoscenze</span>
+      </button>
+    </mat-menu>
+    <span>Eir</span>
+    <span class="example-spacer"></span>
+    <mat-icon class="example-icon" aria-hidden="false" aria-label="Example heart icon">favorite</mat-icon>
+    <mat-icon class="example-icon" aria-hidden="false" aria-label="Example delete icon">delete</mat-icon>
+  </mat-toolbar-row>
+</mat-toolbar>

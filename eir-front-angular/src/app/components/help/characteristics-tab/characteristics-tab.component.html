@@ -1,0 +1,10 @@
+<mat-accordion>
+  <mat-expansion-panel *ngFor="let c of characteristics">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{c.name}}
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <p>{{c.comments}}</p>
+  </mat-expansion-panel>
+</mat-accordion>
