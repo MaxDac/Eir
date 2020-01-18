@@ -41,7 +41,6 @@
     </column>
     <index id="17" parent="6" name="Abilities_name_uindex">
       <ColNames>name</ColNames>
-      <ColumnCollations></ColumnCollations>
       <Unique>1</Unique>
     </index>
     <key id="18" parent="6" name="Abilities_pk">
@@ -137,7 +136,6 @@
     </column>
     <index id="37" parent="10" name="Characteristics_name_uindex">
       <ColNames>name</ColNames>
-      <ColumnCollations></ColumnCollations>
       <Unique>1</Unique>
     </index>
     <key id="38" parent="10" name="Characteristics_pk">

@@ -5,32 +5,33 @@
     </button>
     <mat-menu #menu="matMenu">
       <button mat-menu-item [matMenuTriggerFor]="manual">
-        <mat-icon>dialpad</mat-icon>
+        <mat-icon>help</mat-icon>
         <span>Manuale</span>
       </button>
-      <button mat-menu-item disabled>
-        <mat-icon>voicemail</mat-icon>
-        <span>Check voice mail</span>
+      <button mat-menu-item>
+        <mat-icon>contacts</mat-icon>
+        <span>Scheda personaggio</span>
       </button>
       <button mat-menu-item>
-        <mat-icon>notifications_off</mat-icon>
-        <span>Disable alerts</span>
+        <mat-icon>chat</mat-icon>
+        <span>Chat</span>
+      </button>
+      <button mat-menu-item>
+        <mat-icon>forum</mat-icon>
+        <span>Forum</span>
       </button>
     </mat-menu>
-
     <mat-menu #manual="matMenu">
       <button mat-menu-item [routerLink]="['/help/characteristics']">
-        <mat-icon>dialpad</mat-icon>
         <span>Caratteristiche</span>
       </button>
       <button mat-menu-item [routerLink]="['/help/abilities']">
-        <mat-icon>voicemail</mat-icon>
         <span>Conoscenze</span>
       </button>
     </mat-menu>
     <span>Eir</span>
     <span class="example-spacer"></span>
-    <mat-icon class="example-icon" aria-hidden="false" aria-label="Example heart icon">favorite</mat-icon>
-    <mat-icon class="example-icon" aria-hidden="false" aria-label="Example delete icon">delete</mat-icon>
+    <mat-icon class="example-icon" aria-hidden="false" aria-label="Example heart icon">contacts</mat-icon>
+    <mat-icon class="example-icon" aria-hidden="false" aria-label="Example delete icon">chat</mat-icon>
   </mat-toolbar-row>
 </mat-toolbar>

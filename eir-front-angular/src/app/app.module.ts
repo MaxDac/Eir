@@ -11,9 +11,10 @@ import { HomeComponent } from './components/home/home.component';
 import {RouterModule} from '@angular/router';
 import {appRoutes} from './routes';
 import HttpWrapperService from './services/http-wrapper.service';
-import {HttpClient, HttpClientModule} from '@angular/common/http';
+import {HttpClientModule} from '@angular/common/http';
 import {HelpService} from './services/help.service';
 import { CharacteristicsTabComponent } from './components/help/characteristics-tab/characteristics-tab.component';
+import { SheetCreationComponent } from './components/sheet-creation/sheet-creation.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { CharacteristicsTabComponent } from './components/help/characteristics-t
     CharacteristicsComponent,
     MenuComponent,
     HomeComponent,
-    CharacteristicsTabComponent
+    CharacteristicsTabComponent,
+    SheetCreationComponent
   ],
   imports: [
     HttpClientModule,

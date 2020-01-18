@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import Characteristic, {MartialAttribute, MentalAttribute} from '../../../services/dtos/characteristic';
 import {HelpService} from '../../../services/help.service';
 import {ActivatedRoute} from '@angular/router';
-import {flatMap} from 'rxjs/operators';
+import 'rxjs-compat/add/operator/mergeMap';
 
 @Component({
   selector: 'app-characteristics',
@@ -29,20 +29,16 @@ export class CharacteristicsComponent implements OnInit {
 
   ngOnInit() {
     this.route.data
-      .pipe(
-        flatMap(x => {
+      .flatMap(x => {
           if (x.type === 'Characteristics') {
             return this.client.getCharacteristics();
           } else {
-            return this.client.getAbilities;
+            return this.client.getAbilities();
           }
         })
-      )
       .subscribe(x => {
-        console.log(`x: ${JSON.stringify(x)}`);
         this.martials = this.filterCharacteristics(x, MartialAttribute);
         this.mentals = this.filterCharacteristics(x, MentalAttribute);
-        console.log(`martials: ${JSON.stringify(this.martials)}`);
         this.loaded = true;
       });
   }

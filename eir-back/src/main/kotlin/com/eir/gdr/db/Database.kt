@@ -16,21 +16,20 @@ object Database {
 
     fun getConnection(client: JDBCClient) = client.getConnectionAsync()
 
-    fun testDatabase(vertx: Vertx) {
+    fun testDatabase(vertx: Vertx) =
         getConnection(
             client(
                 vertx
             )
         )
-            .flatMap { c -> c.queryAsync("SELECT * FROM BOOKS") }
-            .map { rs -> rs.rows }
-            .map { rs ->
-                rs.forEach { o ->
-                    println("Id: ${o.getInteger("Id")}")
-                    println("Code: ${o.getString("Code")}")
-                    println("Name: ${o.getString("Name")}")
-                    println(rs.size)
-                }
+        .flatMap { c -> c.queryAsync("SELECT * FROM BOOKS") }
+        .map { rs -> rs.rows }
+        .map { rs ->
+            rs.forEach { o ->
+                println("Id: ${o.getInteger("Id")}")
+                println("Code: ${o.getString("Code")}")
+                println("Name: ${o.getString("Name")}")
+                println(rs.size)
             }
-    }
+        }
 }

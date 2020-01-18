@@ -12,12 +12,10 @@ export class CharacteristicsTabComponent implements OnInit {
 
   @Input()
   set characteristics(value: Characteristic[]) {
-    console.log(`setting: ${JSON.stringify(value)}`);
     this.characts = value;
   }
 
   get characteristics(): Characteristic[] {
-    console.log(`getting: ${JSON.stringify(this.characts)}`);
     return this.characts;
   }
 
