@@ -1,0 +1,14 @@
+.example-container {
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.formatted-control {
+  margin-top: 20px;
+}
+
+.centered-control-container {
+  margin-top: 25px;
+  width: 100%;
+  text-align: center;
+}

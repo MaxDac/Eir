@@ -1,0 +1,15 @@
+.login-container {
+  width: 100%;
+  margin-top: 150px;
+  text-align: center;
+}
+
+.login-card {
+  min-width: 300px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.login-form-field {
+  width: 100%;
+}

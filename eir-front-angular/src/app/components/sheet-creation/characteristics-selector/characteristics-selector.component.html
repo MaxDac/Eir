@@ -1,0 +1,25 @@
+<div class="resume-fields"><span class="totals">
+    Marziali: <span [innerHTML]="totalMartials"></span>
+  </span><span class="totals">
+    Mentali: <span [innerHTML]="totalMentals"></span>
+  </span>
+</div>
+
+<div>
+  <mat-grid-list cols="2" rowHeight="50px">
+    <mat-grid-tile *ngFor="let c of characteristics">
+      <div style="min-width: 150px;">
+        {{c.name}}
+      </div>
+      <div>
+        <app-characteristic-selection
+          [name]="c.name"
+          [minValue]="minimumValue"
+          [maxValue]="5"
+          (selectedValue)="onSelected($event)"
+          [disablePlus]="c.type === 'Marziale' ? disableMartialPlus : disableMentalPlus">
+        </app-characteristic-selection>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>

@@ -1,0 +1,13 @@
+<mat-chip-list aria-label="Attribute selection">
+  <mat-chip
+    color="accent"
+    (click)="decreaseValue()"
+    [disabled]="this.currentVal <= this.minValue">-</mat-chip>
+  <div class="value-shower">
+    {{currentValue}}
+  </div>
+  <mat-chip
+    color="accent"
+    (click)="increaseValue()"
+    [disabled]="disablePlus || this.currentVal >= this.maxValue">+</mat-chip>
+</mat-chip-list>

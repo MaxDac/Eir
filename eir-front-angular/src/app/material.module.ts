@@ -1,13 +1,18 @@
 import {NgModule} from '@angular/core';
 import {
-  MatButtonModule, MatExpansionModule, MatFormFieldModule,
+  MatButtonModule, MatCardModule, MatCheckboxModule, MatChipsModule, MatExpansionModule, MatFormFieldModule, MatGridListModule,
   MatIconModule, MatInputModule,
   MatListModule,
   MatMenuModule,
   MatProgressBarModule, MatSelectModule,
-  MatSidenavModule, MatTabsModule,
+  MatSidenavModule, MatStepperModule, MatTableModule, MatTabsModule,
   MatToolbarModule
 } from '@angular/material';
+import {CdkAccordionModule} from '@angular/cdk/accordion';
+import {CdkStepperModule} from '@angular/cdk/stepper';
+import {CdkTableModule} from '@angular/cdk/table';
+import {CdkTreeModule} from '@angular/cdk/tree';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 
 @NgModule({
   imports: [
@@ -22,7 +27,14 @@ import {
     MatProgressBarModule,
     MatFormFieldModule,
     MatSelectModule,
-    MatInputModule
+    MatInputModule,
+    MatChipsModule,
+    MatGridListModule,
+    DragDropModule,
+    MatTableModule,
+    MatCheckboxModule,
+    MatStepperModule,
+    MatCardModule
   ],
   exports: [
     MatToolbarModule,
@@ -36,7 +48,14 @@ import {
     MatProgressBarModule,
     MatFormFieldModule,
     MatSelectModule,
-    MatInputModule
+    MatInputModule,
+    MatChipsModule,
+    MatGridListModule,
+    DragDropModule,
+    MatTableModule,
+    MatCheckboxModule,
+    MatStepperModule,
+    MatCardModule
   ]
 })
 export class MaterialModule {}

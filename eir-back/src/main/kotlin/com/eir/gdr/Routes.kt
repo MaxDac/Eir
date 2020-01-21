@@ -1,17 +1,20 @@
 package com.eir.gdr
 
-import com.eir.gdr.db.catchToResponse
-import com.eir.gdr.db.queryAsync
-import com.eir.gdr.entities.Characteristic
-import com.eir.gdr.entities.Characteristic.Companion.readCharacteristics
-import io.vertx.core.Future
+import com.eir.gdr.routes.CharacterRoutes
+import com.eir.gdr.routes.CustomRoute
+import com.eir.gdr.routes.HelpRoutes
 import io.vertx.core.Vertx
-import io.vertx.core.json.Json
 import io.vertx.ext.jdbc.JDBCClient
 import io.vertx.ext.web.Router
 import io.vertx.ext.web.RoutingContext
+import io.vertx.ext.web.handler.BodyHandler
 
 object Routes {
+    private val routes: List<CustomRoute> = listOf(
+        HelpRoutes,
+        CharacterRoutes
+    )
+
     private fun addCorsHeaders(context: RoutingContext): RoutingContext {
         context.response().putHeader("Access-Control-Allow-Headers", "Content-Type")
         context.response().putHeader("Access-Control-Allow-Origin", "http://localhost:4200")
@@ -20,6 +23,8 @@ object Routes {
 
     fun routes(vertx: Vertx, client: JDBCClient): Router {
         val router = Router.router(vertx)
+
+        router.route().handler(BodyHandler.create())
 
         // Adding cors headers
         router.options().handler { ctx ->
@@ -34,16 +39,14 @@ object Routes {
             ctx.next()
         }
 
-        router.get("/Abilities").handler { ctx ->
-            client.queryAsync("SELECT * FROM Abilities")
-                .map { rs -> readCharacteristics(rs) }
-                .catchToResponse(ctx)
+        // Adding cors headers
+        router.post().handler { ctx ->
+            addCorsHeaders(ctx)
+            ctx.next()
         }
 
-        router.get("/Characteristics").handler { ctx ->
-            client.queryAsync("SELECT * FROM Characteristics")
-                .map { rs -> readCharacteristics(rs) }
-                .catchToResponse(ctx)
+        routes.forEach { r ->
+            r.defineRoutes(router, client)
         }
 
         router.mountSubRouter("/", StaticRouter.routes(vertx))

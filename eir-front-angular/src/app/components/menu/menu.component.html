@@ -8,11 +8,11 @@
         <mat-icon>help</mat-icon>
         <span>Manuale</span>
       </button>
-      <button mat-menu-item>
+      <button mat-menu-item [routerLink]="['/sheet/creation']">
         <mat-icon>contacts</mat-icon>
         <span>Scheda personaggio</span>
       </button>
-      <button mat-menu-item>
+      <button mat-menu-item [routerLink]="['/chat']">
         <mat-icon>chat</mat-icon>
         <span>Chat</span>
       </button>
@@ -27,6 +27,9 @@
       </button>
       <button mat-menu-item [routerLink]="['/help/abilities']">
         <span>Conoscenze</span>
+      </button>
+      <button mat-menu-item [routerLink]="['/help/perks']">
+        <span>Peculiarit&agrave;</span>
       </button>
     </mat-menu>
     <span>Eir</span>

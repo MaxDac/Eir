@@ -39,3 +39,14 @@ fun JDBCClient.queryAsync(sql: String): Future<ResultSet> =
             res.first.close()
             res.second
         }
+
+fun SQLConnection.dmlAsync(sql: String): Future<Void> =
+    asFuture<Void> { h ->
+        val result = this.execute(sql, h)
+        result
+    }
+
+fun JDBCClient.dmlAsync(sql: String): Future<Unit> =
+    this.getConnectionAsync()
+        .flatMap { c -> c.dmlAsync(sql).map { c } }
+        .map { c -> c.close() }

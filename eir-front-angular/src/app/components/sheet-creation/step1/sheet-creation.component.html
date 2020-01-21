@@ -1,0 +1,40 @@
+<div class="example-container">
+  <div style="margin-top: 20px;">
+    Seleziona il nome e il tipo di personaggio.
+  </div>
+
+  <div class="centered-control-container">
+    <mat-form-field class="formatted-control">
+      <input matInput type="text" placeholder="Seleziona il nome del personaggio" [(ngModel)]="name">
+      <button mat-button *ngIf="name" matSuffix mat-icon-button aria-label="Clear" (click)="name=''">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
+
+  <div class="centered-control-container">
+    <mat-form-field class="formatted-control">
+      <mat-select placeholder="Seleziona il tipo di personaggio" [(ngModel)]="selectedType">
+        <mat-option *ngFor="let type of characteristicTypes" [value]="type">{{type.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="centered-control-container">
+    <mat-form-field class="formatted-control">
+      <mat-select placeholder="Seleziona la sua razza" [(ngModel)]="selectedRace">
+        <mat-option *ngFor="let race of races" [value]="race">{{race.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div>
+    <span [innerHTML]="name"></span> sar&agrave; un
+    <span [innerHTML]="selectedRace === undefined ? '' : selectedRace.name"></span>&nbsp;
+    <span [innerHTML]="selectedType === undefined ? '' : selectedType.name"></span>, confermi questa scelta?
+  </div>
+
+  <div class="centered-control-container">
+    <button mat-raised-button (click)="proceed()">Prosegui</button>
+  </div>
+</div>

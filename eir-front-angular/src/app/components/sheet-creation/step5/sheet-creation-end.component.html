@@ -1,0 +1,53 @@
+<h2>Processo di compilazione completato!</h2>
+
+<p>Per favore, rivedi le caratteristiche che hai inserito per confermare, altrimenti torna pure indietro.</p>
+
+<h3>Generalit&agrave;</h3>
+
+<div>
+  <p>Nome: {{character.name}}</p>
+  <p>Razza: {{character.race.name}}</p>
+  <p>Tipo: {{character.type.name}}</p>
+</div>
+
+<div>
+  <table>
+    <thead>
+      <td>Caratteristiche</td>
+      <td>Mentali</td>
+    </thead>
+    <tbody>
+      <tr>
+        <td valign="top">
+          <table>
+            <tr *ngFor="let c of characterAttributes">
+              <td>
+                {{c.name}}
+              </td>
+              <td>
+                {{c.value}}
+              </td>
+            </tr>
+          </table>
+        </td>
+        <td valign="top">
+          <table>
+            <tr *ngFor="let c of characterAbilities">
+              <td>
+                {{c.name}}
+              </td>
+              <td>
+                {{c.value}}
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div style="margin-top: 20px; width: 100%; text-align: center;">
+  <button mat-raised-button (click)="goBack()" style="margin: 10px;">Torna indietro</button>
+  <button mat-raised-button (click)="proceed()" style="margin: 10px;">Conferma</button>
+</div>

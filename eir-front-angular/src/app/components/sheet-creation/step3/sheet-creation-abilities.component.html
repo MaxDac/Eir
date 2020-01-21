@@ -1,0 +1,12 @@
+<app-characteristics-selector
+  [characteristics]="characteristics"
+  [minValue]="0"
+  [maxMartialValue]="maxMartials"
+  [maxMentalValue]="maxMentals"
+  (isCompleted)="respondIsCompleted($event)" style="margin-bottom: 20px;">
+</app-characteristics-selector>
+
+<div class="formatted-control">
+  <button mat-raised-button (click)="goBack()" style="margin: 10px;">Torna indietro</button>
+  <button mat-raised-button (click)="proceed()" style="margin: 10px;">Prosegui</button>
+</div>

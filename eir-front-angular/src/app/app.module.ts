@@ -14,7 +14,20 @@ import HttpWrapperService from './services/http-wrapper.service';
 import {HttpClientModule} from '@angular/common/http';
 import {HelpService} from './services/help.service';
 import { CharacteristicsTabComponent } from './components/help/characteristics-tab/characteristics-tab.component';
-import { SheetCreationComponent } from './components/sheet-creation/sheet-creation.component';
+import { SheetCreationComponent } from './components/sheet-creation/step1/sheet-creation.component';
+import { ChatComponent } from './components/chat/chat.component';
+import {FormsModule} from '@angular/forms';
+import { SheetCreationAttributesComponent } from './components/sheet-creation/step2/sheet-creation-attributes.component';
+import { CharacteristicSelectionComponent } from './components/sheet-creation/characteristic-selection/characteristic-selection.component';
+import { CharacteristicsSelectorComponent } from './components/sheet-creation/characteristics-selector/characteristics-selector.component';
+import { SheetCreationAbilitiesComponent } from './components/sheet-creation/step3/sheet-creation-abilities.component';
+import { SheetCreationPerksComponent } from './components/sheet-creation/step4/sheet-creation-perks.component';
+import { PerksComponent } from './components/help/perks/perks.component';
+import { SheetCreationEndComponent } from './components/sheet-creation/step5/sheet-creation-end.component';
+import {CookieService} from 'ngx-cookie-service';
+import {CharacterService} from './services/character.service';
+import { LoginComponent } from './components/login/login.component';
+import { NameChangingDirectiveDirective } from './directives/name-changing-directive.directive';
 
 @NgModule({
   declarations: [
@@ -23,7 +36,17 @@ import { SheetCreationComponent } from './components/sheet-creation/sheet-creati
     MenuComponent,
     HomeComponent,
     CharacteristicsTabComponent,
-    SheetCreationComponent
+    SheetCreationComponent,
+    ChatComponent,
+    SheetCreationAttributesComponent,
+    CharacteristicSelectionComponent,
+    CharacteristicsSelectorComponent,
+    SheetCreationAbilitiesComponent,
+    SheetCreationPerksComponent,
+    PerksComponent,
+    SheetCreationEndComponent,
+    LoginComponent,
+    NameChangingDirectiveDirective
   ],
   imports: [
     HttpClientModule,
@@ -31,11 +54,14 @@ import { SheetCreationComponent } from './components/sheet-creation/sheet-creati
     AppRoutingModule,
     BrowserAnimationsModule,
     MaterialModule,
-    RouterModule.forRoot(appRoutes, { enableTracing: true })
+    RouterModule.forRoot(appRoutes, {enableTracing: true}),
+    FormsModule
   ],
   providers: [
     HttpWrapperService,
-    HelpService
+    HelpService,
+    CharacterService,
+    CookieService
   ],
   bootstrap: [AppComponent]
 })

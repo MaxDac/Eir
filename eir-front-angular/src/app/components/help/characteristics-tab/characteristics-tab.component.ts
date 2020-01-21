@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import Characteristic from '../../../services/dtos/characteristic';
+import {Characteristic} from '../../../services/dtos/characteristic';
 
 @Component({
   selector: 'app-characteristics-tab',

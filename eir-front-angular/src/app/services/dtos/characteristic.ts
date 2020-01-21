@@ -1,8 +1,9 @@
-export default interface Characteristic {
+export interface Characteristic {
   id: number;
   name: string;
-  comments: string;
-  type: string;
+  comments: string | null;
+  type: string | null;
+  value: number | null;
 }
 
 export const MartialAttribute = 'Marziale';

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import Characteristic, {MartialAttribute, MentalAttribute} from '../../../services/dtos/characteristic';
+import {Characteristic, MartialAttribute, MentalAttribute} from '../../../services/dtos/characteristic';
 import {HelpService} from '../../../services/help.service';
 import {ActivatedRoute} from '@angular/router';
 import 'rxjs-compat/add/operator/mergeMap';
