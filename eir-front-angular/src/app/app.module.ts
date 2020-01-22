@@ -28,6 +28,11 @@ import {CookieService} from 'ngx-cookie-service';
 import {CharacterService} from './services/character.service';
 import { LoginComponent } from './components/login/login.component';
 import { NameChangingDirectiveDirective } from './directives/name-changing-directive.directive';
+import {AuthenticationService} from './services/authentication.service';
+import {CanActivateViaAuthGuard} from './services/can-activate-via-auth.guard';
+import { ForumComponent } from './components/forum/forum.component';
+import { SheetComponent } from './components/sheet/sheet.component';
+import { SheetSelectionComponent } from './components/sheet/sheet-selection/sheet-selection.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +51,10 @@ import { NameChangingDirectiveDirective } from './directives/name-changing-direc
     PerksComponent,
     SheetCreationEndComponent,
     LoginComponent,
-    NameChangingDirectiveDirective
+    NameChangingDirectiveDirective,
+    ForumComponent,
+    SheetComponent,
+    SheetSelectionComponent
   ],
   imports: [
     HttpClientModule,
@@ -61,6 +69,8 @@ import { NameChangingDirectiveDirective } from './directives/name-changing-direc
     HttpWrapperService,
     HelpService,
     CharacterService,
+    AuthenticationService,
+    CanActivateViaAuthGuard,
     CookieService
   ],
   bootstrap: [AppComponent]

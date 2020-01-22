@@ -5,13 +5,12 @@ import com.eir.gdr.db.catchToResponse
 import com.eir.gdr.db.queryAsync
 import com.eir.gdr.entities.CharacterType
 import com.eir.gdr.entities.Characteristic
-import com.eir.gdr.entities.Perk
 import com.eir.gdr.entities.Race
 import com.eir.gdr.logic.PerksLogic
 import io.vertx.ext.jdbc.JDBCClient
 import io.vertx.ext.web.Router
 
-object HelpRoutes : CustomRoute {
+object HelpRoutes : CustomRoutes {
     val attributeNature = "Caratteristica";
     val abilityNature = "Conoscenza";
 

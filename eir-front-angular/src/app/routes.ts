@@ -9,17 +9,21 @@ import {SheetCreationPerksComponent} from './components/sheet-creation/step4/she
 import {PerksComponent} from './components/help/perks/perks.component';
 import {SheetCreationEndComponent} from './components/sheet-creation/step5/sheet-creation-end.component';
 import {LoginComponent} from './components/login/login.component';
+import {CanActivateViaAuthGuard} from './services/can-activate-via-auth.guard';
+import {ForumComponent} from './components/forum/forum.component';
 
 export const appRoutes: Routes = [
-  { path: '', component: HomeComponent },
-  { path: 'help/characteristics', component: CharacteristicsComponent, data: { type: 'Characteristics' } },
-  { path: 'help/abilities', component: CharacteristicsComponent, data: { type: 'Abilities' } },
-  { path: 'help/perks', component: PerksComponent },
+  { path: '', component: HomeComponent, canActivate: [CanActivateViaAuthGuard] },
+  { path: 'help/characteristics', component: CharacteristicsComponent,
+    data: { type: 'Characteristics' }, canActivate: [CanActivateViaAuthGuard] },
+  { path: 'help/abilities', component: CharacteristicsComponent, data: { type: 'Abilities' }, canActivate: [CanActivateViaAuthGuard] },
+  { path: 'help/perks', component: PerksComponent, canActivate: [CanActivateViaAuthGuard] },
   { path: 'login', component: LoginComponent },
-  { path: 'sheet/creation', component: SheetCreationComponent },
-  { path: 'sheet/creation/attributes', component: SheetCreationAttributesComponent },
-  { path: 'sheet/creation/abilities', component: SheetCreationAbilitiesComponent },
-  { path: 'sheet/creation/perks', component: SheetCreationPerksComponent },
-  { path: 'sheet/creation/end', component: SheetCreationEndComponent },
-  { path: 'chat', component: ChatComponent }
+  { path: 'sheet/creation', component: SheetCreationComponent, canActivate: [CanActivateViaAuthGuard] },
+  { path: 'sheet/creation/attributes', component: SheetCreationAttributesComponent, canActivate: [CanActivateViaAuthGuard] },
+  { path: 'sheet/creation/abilities', component: SheetCreationAbilitiesComponent, canActivate: [CanActivateViaAuthGuard] },
+  { path: 'sheet/creation/perks', component: SheetCreationPerksComponent, canActivate: [CanActivateViaAuthGuard] },
+  { path: 'sheet/creation/end', component: SheetCreationEndComponent, canActivate: [CanActivateViaAuthGuard] },
+  { path: 'chat', component: ChatComponent, canActivate: [CanActivateViaAuthGuard] },
+  { path: 'forum', component: ForumComponent, canActivate: [CanActivateViaAuthGuard] }
 ];

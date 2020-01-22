@@ -1,8 +1,6 @@
 package com.eir.gdr
 
-import com.eir.gdr.routes.CharacterRoutes
-import com.eir.gdr.routes.CustomRoute
-import com.eir.gdr.routes.HelpRoutes
+import com.eir.gdr.routes.*
 import io.vertx.core.Vertx
 import io.vertx.ext.jdbc.JDBCClient
 import io.vertx.ext.web.Router
@@ -10,42 +8,29 @@ import io.vertx.ext.web.RoutingContext
 import io.vertx.ext.web.handler.BodyHandler
 
 object Routes {
-    private val routes: List<CustomRoute> = listOf(
+    private val WHITELISTED_ROUTES: List<CustomRoutes> = listOf(
         HelpRoutes,
-        CharacterRoutes
+        AuthenticationRoutes
     )
 
-    private fun addCorsHeaders(context: RoutingContext): RoutingContext {
-        context.response().putHeader("Access-Control-Allow-Headers", "Content-Type")
-        context.response().putHeader("Access-Control-Allow-Origin", "http://localhost:4200")
-        return context
-    }
+    private val CHECKED_ROUTES: List<CustomRoutes> = listOf(
+        CharacterRoutes
+    )
 
     fun routes(vertx: Vertx, client: JDBCClient): Router {
         val router = Router.router(vertx)
 
         router.route().handler(BodyHandler.create())
 
-        // Adding cors headers
-        router.options().handler { ctx ->
-            addCorsHeaders(ctx)
-            ctx.response().statusCode = 200
-            ctx.response().end()
+        CorsRoutes.defineRoutes(router, client)
+
+        WHITELISTED_ROUTES.forEach { r ->
+            r.defineRoutes(router, client)
         }
 
-        // Adding cors headers
-        router.get().handler { ctx ->
-            addCorsHeaders(ctx)
-            ctx.next()
-        }
+        GuardRoutes.defineRoutes(router, client)
 
-        // Adding cors headers
-        router.post().handler { ctx ->
-            addCorsHeaders(ctx)
-            ctx.next()
-        }
-
-        routes.forEach { r ->
+        CHECKED_ROUTES.forEach { r ->
             r.defineRoutes(router, client)
         }
 

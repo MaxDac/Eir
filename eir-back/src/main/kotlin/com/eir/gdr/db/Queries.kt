@@ -28,20 +28,28 @@ object Queries {
             " where Effects.perk_id              = Perks.id\n" +
             "   and Effects.characteristic_id    = Characteristics.id"
 
+    val getCharacterQueryWithoutFilters =
+        "select Character.id                         id\n" +
+                "      ,Character.name                       name\n" +
+                "      ,Character.description                description\n" +
+                "      ,CharacterTypes.id                    type_id\n" +
+                "      ,CharacterTypes.name                  type_name\n" +
+                "      ,Races.id                             race_id\n" +
+                "      ,Races.name                           race_name\n" +
+                "  from Character\n" +
+                "      ,CharacterTypes\n" +
+                "      ,Races\n" +
+                " where Character.type                       = CharacterTypes.id\n" +
+                "   and Character.race                       = Races.id\n";
+
     fun getCharacterByName(name: String) =
-            "select Character.id                         id\n" +
-            "      ,Character.name                       name\n" +
-            "      ,Character.description                description\n" +
-            "      ,CharacterTypes.id                    type_id\n" +
-            "      ,CharacterTypes.name                  type_name\n" +
-            "      ,Races.id                             race_id\n" +
-            "      ,Races.name                           race_name\n" +
-            "  from Character\n" +
-            "      ,CharacterTypes\n" +
-            "      ,Races\n" +
-            " where Character.type                       = CharacterTypes.id\n" +
-            "   and Character.race                       = Races.id\n" +
-            "   and Character.name                       = '$name'"
+        "$getCharacterQueryWithoutFilters   and Character.name                       = '$name'"
+
+    fun getCharacterById(id: Int) =
+        "$getCharacterQueryWithoutFilters   and Character.id                         = $id"
+
+    fun getCharacterByUserId(userId: Int) =
+        "$getCharacterQueryWithoutFilters   and Character.user_id                    = $userId"
 
     fun getCharacterCharacteristics(charId: Int, nature: String) =
         "select ch.id\n" +

@@ -352,7 +352,7 @@
       <DataType>integer|0s</DataType>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="85" parent="15" name="nickname">
+    <column id="85" parent="15" name="username">
       <Position>2</Position>
       <DataType>text|0s</DataType>
       <NotNull>1</NotNull>

@@ -1,0 +1,24 @@
+<div class="sheet-selection-container">
+
+  <mat-card class="sheet-selection-card">
+
+    <div>
+      <mat-form-field class="sheet-selection-form-field">
+        <mat-form-field>
+          <mat-label>Personaggio</mat-label>
+          <mat-select>
+            <mat-option *ngFor="let food of foods" [value]="food.value">
+              {{food.viewValue}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-form-field>
+    </div>
+
+    <div>
+      <button mat-raised-button (click)="select()">Select</button>
+    </div>
+
+  </mat-card>
+
+</div>

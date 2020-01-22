@@ -1,5 +1,6 @@
 package com.eir.gdr.logic
 
+import com.eir.gdr.ClientFuture
 import com.eir.gdr.bind
 import com.eir.gdr.db.Queries
 import com.eir.gdr.db.dmlAsync
@@ -14,12 +15,21 @@ import io.vertx.core.Future
 import io.vertx.ext.jdbc.JDBCClient
 
 object CharacterLogic {
-    fun getByName(name: String): (JDBCClient) -> Future<UserCharacter?> = { client ->
-        client.queryAsync(Queries.getCharacterByName(name))
+    fun getCharacterByQuery(query: String): ClientFuture<UserCharacter?> = { client ->
+        client.queryAsync(query)
             .map { x -> UserCharacter.readCharacterMinimal(x).firstOrNull() }
     }
 
-    fun getByNameComplete(name: String): (JDBCClient) -> Future<UserCharacter?> = { client ->
+    fun getByName(name: String): ClientFuture<UserCharacter?> =
+        getCharacterByQuery(Queries.getCharacterByName(name))
+
+    fun getById(id: Int): ClientFuture<UserCharacter?> =
+        getCharacterByQuery(Queries.getCharacterById(id))
+
+    fun getByUserId(userId: Int): ClientFuture<UserCharacter?> =
+        getCharacterByQuery(Queries.getCharacterByUserId(userId))
+
+    fun getCharacterComplete(delegate: () -> ClientFuture<UserCharacter?>): ClientFuture<UserCharacter?> = { client ->
         fun getAttributesByCharId(charId: Int): Future<List<Characteristic>> =
             client.queryAsync(Queries.getCharacterAttributes(charId))
                 .map { rs -> Characteristic.readUserCharacteristics(rs) }
@@ -32,7 +42,7 @@ object CharacterLogic {
             client.queryAsync(Queries.getPerksByCharacter(charId))
                 .map { rs -> UserPerk.getCharacterPerk(rs) }
 
-        getByName(name)(client)
+        delegate()(client)
             .bind { c ->
                 if (c?.id == null) throw notFound
 
@@ -64,9 +74,12 @@ object CharacterLogic {
             } }
     }
 
-    fun save(c: UserCharacter): (JDBCClient) -> Future<Unit> = { client ->
+    fun save(c: UserCharacter?, userId: Int?): ClientFuture<Unit> = { client ->
+        if (c == null || userId == null) throw notFound
+
         val characterDml =
-            client.dmlAsync("insert into Character(name, type, race) values ('${c.name}', ${c.type!!.id}, ${c.race!!.id})")
+            client.dmlAsync("insert into Character(name, type, race, user_id) " +
+                    "values ('${c.name}', ${c.type!!.id}, ${c.race!!.id}), $userId")
 
         fun characteristicsDml(charId: Int): Future<Unit> =
             (c.martialAttributes!! + c.mentalAttributes!! + c.mentalAbilities!! + c.mentalAbilities!!).map { cc ->

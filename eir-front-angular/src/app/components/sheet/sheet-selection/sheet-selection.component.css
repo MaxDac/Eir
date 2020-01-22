@@ -1,0 +1,15 @@
+.sheet-selection-container {
+  width: 100%;
+  margin-top: 150px;
+  text-align: center;
+}
+
+.sheet-selection-card {
+  min-width: 300px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.sheet-selection-form-field {
+  width: 100%;
+}
