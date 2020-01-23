@@ -1,1 +1,6 @@
-<p>chat works!</p>
+<div class="chat-room">
+  <app-chat-rows [rows]="currentValue"></app-chat-rows>
+</div>
+<div class="chat-input">
+  <app-chat-input (sendingPhrase)="onSendPhrase($event)"></app-chat-input>
+</div>

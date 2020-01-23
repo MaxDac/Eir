@@ -25,7 +25,6 @@ export class SheetCreationEndComponent implements OnInit {
 
   ngOnInit() {
     this.character = checkCharacterState(this.cookieService, this.router, 4);
-    console.log(`character: ${JSON.stringify(this.character)}`);
   }
 
   proceed() {

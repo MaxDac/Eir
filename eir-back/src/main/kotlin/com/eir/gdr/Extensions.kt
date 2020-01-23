@@ -1,6 +1,7 @@
 package com.eir.gdr
 
 import com.eir.gdr.db.queryAsync
+import com.eir.gdr.logic.AuthenticationLogic
 import com.eir.gdr.logic.Exceptions
 import com.eir.gdr.routes.GuardRoutes
 import io.vertx.core.Future
@@ -47,22 +48,16 @@ fun String.toMD5(): String {
 }
 
 fun RoutingContext.getUserFromSession(client: JDBCClient): Future<Int?> {
-    try {
+    return try {
         val cookieToken = this.request().getCookie(GuardRoutes.cookieTokenName)
         val sessionToken = this.request().getHeader(GuardRoutes.headerTokenName)
 
         if (cookieToken.value.isNullOrEmpty() || sessionToken.isNullOrEmpty()) throw Exceptions.sessionInvalid
 
-        val query =
-            "SELECT user_id FROM Sessions WHERE " +
-                    "session_token = '${sessionToken}' AND cookie_token = '${cookieToken.value}' " +
-                    "AND creation_date > ${Calendar.getInstance().timeInMillis - GuardRoutes.sessionExpiredInMs}"
-
-        return client.queryAsync(query)
-            .map { x -> x.rows.map { rs -> rs.getInteger("user_id") }.firstOrNull() }
+        AuthenticationLogic.checkSessionTokens(sessionToken, cookieToken.value, client)
     }
     catch (ex: java.lang.Exception) {
         println("Error while validating the routes: $ex")
-        return Future.failedFuture(ex)
+        Future.failedFuture(ex)
     }
 }

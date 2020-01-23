@@ -1,0 +1,22 @@
+<div class="sheet-selection-container">
+
+  <mat-card class="sheet-selection-card">
+
+    <div>
+      <mat-form-field class="sheet-selection-form-field">
+        <mat-label>Stanza</mat-label>
+        <mat-select [(value)]="selectedRoom">
+          <mat-option *ngFor="let room of rooms" [value]="room.id">
+            {{room.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div>
+      <button mat-raised-button class="sheet-button-bottom" (click)="select()">Seleziona</button>
+    </div>
+
+  </mat-card>
+
+</div>

@@ -49,7 +49,6 @@ export function resetCache(service: CookieService) {
 }
 
 export function setCharacterState(service: CookieService, character: Character) {
-  console.log(`Saving: ${JSON.stringify(character)}`);
   service.set(CHARACTER_COOKIE_KEY, JSON.stringify(character));
 }
 
@@ -66,13 +65,11 @@ export function mapCharacteristicForSave(c: Characteristic): Characteristic {
 export function checkCharacterState(service: CookieService, router: Router, step: number): Character | null {
   const returnToStart = (r: Router) => {
     if (step !== 0) {
-      console.log('going to start');
       r.navigate(['sheet/creation']);
     }
   };
 
   const goToLink = (r: Router, url: string, c: Character) => {
-    console.log(`going to ${url}`);
     r.navigate([url], {
       state: c
     });
@@ -81,7 +78,6 @@ export function checkCharacterState(service: CookieService, router: Router, step
   const serializedCharacter = service.get(CHARACTER_COOKIE_KEY);
 
   if (serializedCharacter === undefined || serializedCharacter === null || serializedCharacter === '') {
-    console.log('Character from cookie is null');
     returnToStart(router);
     return null;
   }

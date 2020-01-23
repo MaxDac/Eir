@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import HttpWrapperService from '../../services/http-wrapper.service';
+import {HttpWrapperService} from '../../services/http-wrapper.service';
 import {Characteristic} from '../../services/dtos/characteristic';
 
 @Component({

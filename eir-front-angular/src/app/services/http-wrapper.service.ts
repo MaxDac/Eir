@@ -1,4 +1,4 @@
-import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
 import 'rxjs-compat/add/operator/map';
 import {catchError} from 'rxjs/operators';
@@ -8,19 +8,27 @@ import {isNull} from '../helpers';
 
 interface AppHttpOptions {
   headers?: HttpHeaders;
+  observe?: 'body';
+  params?: HttpParams | {
+    [param: string]: string | string[];
+  };
+  reportProgress?: boolean;
+  responseType?: 'json';
+  withCredentials?: boolean;
 }
 
 @Injectable({ providedIn: 'root' })
-export default class HttpWrapperService {
+export class HttpWrapperService {
 
   constructor(public http: HttpClient) {}
 
-  private baseUrl = 'http://localhost:8080';
+  private baseUrl = 'http://localhost:8080/Api';
 
   private readonly httpOptions: AppHttpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json'
-    })
+    }),
+    withCredentials: true
   };
 
   private static errorHandler(error: HttpErrorResponse) {
@@ -31,7 +39,8 @@ export default class HttpWrapperService {
     return {
       headers: new HttpHeaders({
         'x-session-header': tokens.headerToken
-      })
+      }),
+      withCredentials: true
     };
   }
 
@@ -41,7 +50,8 @@ export default class HttpWrapperService {
         options.headers.append('x-session-header', tokens.headerToken) :
         new HttpHeaders({
           'x-session-header': tokens.headerToken
-        })
+        }),
+      withCredentials: true
     };
   }
 

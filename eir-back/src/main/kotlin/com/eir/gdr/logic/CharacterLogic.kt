@@ -15,18 +15,22 @@ import io.vertx.core.Future
 import io.vertx.ext.jdbc.JDBCClient
 
 object CharacterLogic {
-    fun getCharacterByQuery(query: String): ClientFuture<UserCharacter?> = { client ->
+    fun getCharacterByQuery(query: String): ClientFuture<List<UserCharacter>?> = { client ->
         client.queryAsync(query)
-            .map { x -> UserCharacter.readCharacterMinimal(x).firstOrNull() }
+            .map { x -> UserCharacter.readCharacterMinimal(x) }
     }
 
-    fun getByName(name: String): ClientFuture<UserCharacter?> =
-        getCharacterByQuery(Queries.getCharacterByName(name))
+    fun getByName(name: String): ClientFuture<UserCharacter?> = { client ->
+        getCharacterByQuery(Queries.getCharacterByName(name))(client)
+            .map { us -> us?.firstOrNull() }
+    }
 
-    fun getById(id: Int): ClientFuture<UserCharacter?> =
-        getCharacterByQuery(Queries.getCharacterById(id))
+    fun getById(id: Int): ClientFuture<UserCharacter?> = { client ->
+        getCharacterByQuery(Queries.getCharacterById(id))(client)
+            .map { us -> us?.firstOrNull() }
+    }
 
-    fun getByUserId(userId: Int): ClientFuture<UserCharacter?> =
+    fun getByUserId(userId: Int): ClientFuture<List<UserCharacter>?> =
         getCharacterByQuery(Queries.getCharacterByUserId(userId))
 
     fun getCharacterComplete(delegate: () -> ClientFuture<UserCharacter?>): ClientFuture<UserCharacter?> = { client ->
@@ -77,9 +81,11 @@ object CharacterLogic {
     fun save(c: UserCharacter?, userId: Int?): ClientFuture<Unit> = { client ->
         if (c == null || userId == null) throw notFound
 
+        val insertionDml = "insert into Character(name, type, race, user_id) " +
+                "values ('${c.name}', ${c.type!!.id}, ${c.race!!.id}, $userId)"
+
         val characterDml =
-            client.dmlAsync("insert into Character(name, type, race, user_id) " +
-                    "values ('${c.name}', ${c.type!!.id}, ${c.race!!.id}), $userId")
+            client.dmlAsync(insertionDml)
 
         fun characteristicsDml(charId: Int): Future<Unit> =
             (c.martialAttributes!! + c.mentalAttributes!! + c.mentalAbilities!! + c.mentalAbilities!!).map { cc ->
@@ -98,8 +104,8 @@ object CharacterLogic {
             } ?: Future.future {}
 
         characterDml
-            .flatMap { getByName(c.name!!)(client) }
-            .flatMap { user -> characteristicsDml(user!!.id!!).map { user.id } }
-            .flatMap { id -> perksDml(id!!) }
+            .bind { getByName(c.name!!)(client) }
+            .bind { user -> characteristicsDml(user!!.id!!).map { user.id } }
+            .bind { id -> perksDml(id!!) }
     }
 }

@@ -7,12 +7,15 @@ import com.eir.gdr.db.parseBody
 import com.eir.gdr.entities.character.UserCharacter
 import com.eir.gdr.getUserFromSession
 import com.eir.gdr.logic.CharacterLogic
+import io.vertx.core.Vertx
 import io.vertx.ext.jdbc.JDBCClient
 import io.vertx.ext.web.Router
 import java.lang.Exception
 
 object CharacterRoutes : CustomRoutes {
-    override fun defineRoutes(router: Router, client: JDBCClient) {
+    override fun defineRoutes(vertx: Vertx, client: JDBCClient): Router {
+        val router = Router.router(vertx)
+
         router.post("/Character/Save").handler { ctx ->
             try {
                 val body = ctx.parseBody(UserCharacter::class.java)
@@ -20,7 +23,7 @@ object CharacterRoutes : CustomRoutes {
                     .bind { userId ->
                         CharacterLogic.save(body, userId)(client)
                     }
-                    .map { ctx.response().end("Ok!") }
+                    .catchToResponse(ctx)
             }
             catch (ex: Exception) {
                 ctx.mapToResponse(ex)
@@ -52,5 +55,7 @@ object CharacterRoutes : CustomRoutes {
         router.get("/Something").handler { ctx ->
             ctx.response().end("Something!")
         }
+
+        return router
     }
 }

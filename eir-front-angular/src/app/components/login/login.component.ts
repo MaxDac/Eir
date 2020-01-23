@@ -26,7 +26,6 @@ export class LoginComponent implements OnInit {
       password: this.password
     }).subscribe(result => {
       if (result.userId !== null) {
-        console.log(`Ok!: ${JSON.stringify(result)}`);
         this.router.navigate(['']);
       } else {
         console.log(`Failed!`);

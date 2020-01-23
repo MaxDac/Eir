@@ -26,7 +26,7 @@ export class CharacteristicsSelectorComponent implements OnInit {
   disableMartialPlus: boolean;
   disableMentalPlus: boolean;
 
-  private get minimumValue(): number {
+  get minimumValue(): number {
     return this.minValue === undefined ? 0 : this.minValue;
   }
 

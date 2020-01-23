@@ -1,5 +1,6 @@
 package com.eir.gdr
 
+import com.eir.gdr.logic.ChatLogic
 import com.eir.gdr.routes.*
 import io.vertx.core.Vertx
 import io.vertx.ext.jdbc.JDBCClient
@@ -14,6 +15,7 @@ object Routes {
     )
 
     private val CHECKED_ROUTES: List<CustomRoutes> = listOf(
+        ChatInfoRoutes,
         CharacterRoutes
     )
 
@@ -22,19 +24,26 @@ object Routes {
 
         router.route().handler(BodyHandler.create())
 
-        CorsRoutes.defineRoutes(router, client)
+        router.mountSubRouter("/", CorsRoutes.defineRoutes(vertx, client))
 
         WHITELISTED_ROUTES.forEach { r ->
-            r.defineRoutes(router, client)
-        }
-
-        GuardRoutes.defineRoutes(router, client)
-
-        CHECKED_ROUTES.forEach { r ->
-            r.defineRoutes(router, client)
+            router.mountSubRouter("/Api", r.defineRoutes(vertx, client))
         }
 
         router.mountSubRouter("/", StaticRouter.routes(vertx))
+
+        ChatLogic.getRooms()(client)
+            .map { rooms ->
+                rooms.forEach { r ->
+                    router.mountSubRouter("/Api/Chat/${r.id}", ChatRoutes(r.id).defineRoutes(vertx, client))
+                }
+            }
+
+        router.mountSubRouter("/", GuardRoutes.defineRoutes(vertx, client))
+
+        CHECKED_ROUTES.forEach { r ->
+            router.mountSubRouter("/Api", r.defineRoutes(vertx, client))
+        }
 
 //        router.route().handler(staticHandler())
 

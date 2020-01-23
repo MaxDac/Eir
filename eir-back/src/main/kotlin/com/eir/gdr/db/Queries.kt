@@ -87,4 +87,18 @@ object Queries {
         "   and rel.perk_id                          = p.id\n" +
         "   and p.id                                 = e.perk_id\n" +
         "   and e.characteristic_id                  = c.id"
+
+    private val chatRoomQueries =
+        "select ce.id\n" +
+            "      ,ce.room_id\n" +
+            "      ,ce.character_id\n" +
+            "      ,ce.creation_date\n" +
+            "      ,ce.action\n" +
+            "      ,ch.name\n" +
+            "  from ChatEntries                      ce\n" +
+            "      ,Character                        ch\n" +
+            " where room_id                          = "
+
+    fun getChatRoomQueries(roomId: Int) =
+        "$chatRoomQueries$roomId"
 }

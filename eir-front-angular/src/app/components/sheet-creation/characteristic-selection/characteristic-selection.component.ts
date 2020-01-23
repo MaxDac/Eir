@@ -26,7 +26,6 @@ export class CharacteristicSelectionComponent implements OnInit {
 
   get currentValue(): number {
     if (this.currentVal === undefined) {
-      console.log(`minValue: ${this.minValue}`);
       this.currentVal = this.minValue;
     }
 

@@ -6,13 +6,16 @@ import com.eir.gdr.db.parseBody
 import com.eir.gdr.entities.login.AuthenticationRequest
 import com.eir.gdr.logic.AuthenticationLogic
 import com.eir.gdr.logic.Exceptions
+import io.vertx.core.Vertx
 import io.vertx.core.http.Cookie
 import io.vertx.core.json.Json
 import io.vertx.ext.jdbc.JDBCClient
 import io.vertx.ext.web.Router
 
 object AuthenticationRoutes : CustomRoutes {
-    override fun defineRoutes(router: Router, client: JDBCClient) {
+    override fun defineRoutes(vertx: Vertx, client: JDBCClient): Router {
+        val router = Router.router(vertx)
+
         router.post("/Login").handler { ctx ->
             val request = ctx.parseBody(AuthenticationRequest::class.java)
             if (request?.isValid() == false) ctx.mapToResponse("No body!")
@@ -31,5 +34,7 @@ object AuthenticationRoutes : CustomRoutes {
                     ctx.response().end(Json.encode(ts.copy(userId = userId)))
                 }
         }
+
+        return router
     }
 }

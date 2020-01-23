@@ -10,7 +10,7 @@ import { MenuComponent } from './components/menu/menu.component';
 import { HomeComponent } from './components/home/home.component';
 import {RouterModule} from '@angular/router';
 import {appRoutes} from './routes';
-import HttpWrapperService from './services/http-wrapper.service';
+import {HttpWrapperService} from './services/http-wrapper.service';
 import {HttpClientModule} from '@angular/common/http';
 import {HelpService} from './services/help.service';
 import { CharacteristicsTabComponent } from './components/help/characteristics-tab/characteristics-tab.component';
@@ -33,6 +33,9 @@ import {CanActivateViaAuthGuard} from './services/can-activate-via-auth.guard';
 import { ForumComponent } from './components/forum/forum.component';
 import { SheetComponent } from './components/sheet/sheet.component';
 import { SheetSelectionComponent } from './components/sheet/sheet-selection/sheet-selection.component';
+import { ChatRoomsComponent } from './components/chat/chat-rooms/chat-rooms.component';
+import { ChatInputComponent } from './components/chat/chat-input/chat-input.component';
+import { ChatRowsComponent } from './components/chat/chat-rows/chat-rows.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +57,10 @@ import { SheetSelectionComponent } from './components/sheet/sheet-selection/shee
     NameChangingDirectiveDirective,
     ForumComponent,
     SheetComponent,
-    SheetSelectionComponent
+    SheetSelectionComponent,
+    ChatRoomsComponent,
+    ChatInputComponent,
+    ChatRowsComponent
   ],
   imports: [
     HttpClientModule,

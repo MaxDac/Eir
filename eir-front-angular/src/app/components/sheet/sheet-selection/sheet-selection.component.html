@@ -4,19 +4,18 @@
 
     <div>
       <mat-form-field class="sheet-selection-form-field">
-        <mat-form-field>
-          <mat-label>Personaggio</mat-label>
-          <mat-select>
-            <mat-option *ngFor="let food of foods" [value]="food.value">
-              {{food.viewValue}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
+        <mat-label>Personaggio</mat-label>
+        <mat-select [(value)]="selectedCharacter">
+          <mat-option *ngFor="let character of characters" [value]="character.id">
+            {{character.name}}
+          </mat-option>
+        </mat-select>
       </mat-form-field>
     </div>
 
     <div>
-      <button mat-raised-button (click)="select()">Select</button>
+      <button mat-raised-button class="sheet-button-bottom" (click)="select()">Seleziona</button>
+      <button mat-raised-button class="sheet-button-bottom" (click)="createNew()">Crea nuovo</button>
     </div>
 
   </mat-card>

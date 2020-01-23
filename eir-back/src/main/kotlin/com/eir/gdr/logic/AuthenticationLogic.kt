@@ -4,6 +4,7 @@ import com.eir.gdr.db.dmlAsync
 import com.eir.gdr.db.queryAsync
 import com.eir.gdr.entities.login.AuthenticationRequest
 import com.eir.gdr.entities.login.SessionTokens
+import com.eir.gdr.routes.GuardRoutes
 import io.vertx.core.Future
 import io.vertx.core.Promise
 import io.vertx.ext.jdbc.JDBCClient
@@ -30,5 +31,15 @@ object AuthenticationLogic {
             }
 
         return promise.future()
+    }
+
+    fun checkSessionTokens(sessionToken: String, cookieToken: String, client: JDBCClient): Future<Int?> {
+        val query =
+            "SELECT user_id FROM Sessions WHERE " +
+                    "session_token = '${sessionToken}' AND cookie_token = '${cookieToken}' " +
+                    "AND creation_date > ${Calendar.getInstance().timeInMillis - GuardRoutes.sessionExpiredInMs}"
+
+        return client.queryAsync(query)
+            .map { x -> x.rows.map { rs -> rs.getInteger("user_id") }.firstOrNull() }
     }
 }

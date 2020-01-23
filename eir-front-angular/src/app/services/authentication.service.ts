@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import HttpWrapperService from './http-wrapper.service';
+import {HttpWrapperService} from './http-wrapper.service';
 import {AuthenticationRequest} from './dtos/authentication-request';
 import {SessionTokens} from './dtos/session-tokens';
 import {Observable} from 'rxjs';

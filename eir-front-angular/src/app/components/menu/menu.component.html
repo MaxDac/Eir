@@ -8,7 +8,7 @@
         <mat-icon>help</mat-icon>
         <span>Manuale</span>
       </button>
-      <button mat-menu-item [routerLink]="['/sheet/creation']">
+      <button mat-menu-item [routerLink]="['/sheet/selection']">
         <mat-icon>contacts</mat-icon>
         <span>Scheda personaggio</span>
       </button>
@@ -34,7 +34,19 @@
     </mat-menu>
     <span>Eir</span>
     <span class="example-spacer"></span>
-    <mat-icon class="example-icon" aria-hidden="false" aria-label="Example heart icon">contacts</mat-icon>
-    <mat-icon class="example-icon" aria-hidden="false" aria-label="Example delete icon">chat</mat-icon>
+    <mat-icon
+      class="example-icon"
+      aria-hidden="false"
+      aria-label="Example heart icon"
+      [routerLink]="['/sheet/selection']">
+      contacts
+    </mat-icon>
+    <mat-icon
+      class="example-icon"
+      aria-hidden="false"
+      aria-label="Example delete icon"
+      [routerLink]="['/rooms']">
+      chat
+    </mat-icon>
   </mat-toolbar-row>
 </mat-toolbar>

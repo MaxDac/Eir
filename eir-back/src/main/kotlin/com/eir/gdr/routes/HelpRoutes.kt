@@ -7,6 +7,7 @@ import com.eir.gdr.entities.CharacterType
 import com.eir.gdr.entities.Characteristic
 import com.eir.gdr.entities.Race
 import com.eir.gdr.logic.PerksLogic
+import io.vertx.core.Vertx
 import io.vertx.ext.jdbc.JDBCClient
 import io.vertx.ext.web.Router
 
@@ -14,7 +15,9 @@ object HelpRoutes : CustomRoutes {
     val attributeNature = "Caratteristica";
     val abilityNature = "Conoscenza";
 
-    override fun defineRoutes(router: Router, client: JDBCClient) {
+    override fun defineRoutes(vertx: Vertx, client: JDBCClient): Router {
+        val router = Router.router(vertx)
+
         router.get("/Abilities").handler { ctx ->
             client.queryAsync("SELECT * FROM Characteristics WHERE nature = '$abilityNature'")
                 .map { rs -> Characteristic.readCharacteristics(rs) }
@@ -43,5 +46,7 @@ object HelpRoutes : CustomRoutes {
             PerksLogic.getPerksWithEffects(client)
                 .catchToResponse(ctx)
         }
+
+        return router
     }
 }

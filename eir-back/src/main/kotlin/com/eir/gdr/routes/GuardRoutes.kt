@@ -3,6 +3,7 @@ package com.eir.gdr.routes
 import com.eir.gdr.db.mapToResponse
 import com.eir.gdr.getUserFromSession
 import io.vertx.core.Future
+import io.vertx.core.Vertx
 import io.vertx.ext.jdbc.JDBCClient
 import io.vertx.ext.web.Router
 import io.vertx.ext.web.RoutingContext
@@ -16,7 +17,9 @@ object GuardRoutes : CustomRoutes {
         ctx.getUserFromSession(client)
             .map { x -> x != null }
 
-    override fun defineRoutes(router: Router, client: JDBCClient) {
+    override fun defineRoutes(vertx: Vertx, client: JDBCClient): Router {
+        val router = Router.router(vertx)
+
         router.get().handler { ctx ->
             checkSessionContext(ctx, client)
                 .setHandler { res ->
@@ -24,5 +27,7 @@ object GuardRoutes : CustomRoutes {
                     else ctx.mapToResponse("Session not found")
                 }
         }
+
+        return router
     }
 }

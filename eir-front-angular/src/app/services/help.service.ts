@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import HttpWrapperService from './http-wrapper.service';
+import {HttpWrapperService} from './http-wrapper.service';
 import {Observable} from 'rxjs';
 import {Characteristic} from './dtos/characteristic';
 import {Race} from './dtos/race';

@@ -28,7 +28,10 @@
               "src/styles.css",
               "./node_modules/font-awesome/css/font-awesome.css"
             ],
-            "scripts": []
+            "scripts": [
+              "src/socket-js.js",
+              "src/vertx-eventbus.js"
+            ]
           },
           "configurations": {
             "production": {
