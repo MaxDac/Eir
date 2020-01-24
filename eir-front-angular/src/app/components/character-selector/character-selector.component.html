@@ -1,0 +1,24 @@
+<div *ngIf="showSelector">
+  <table>
+    <tr>
+      <td>
+        <mat-form-field class="sheet-selection-form-field">
+          <mat-label class="character-selector">Personaggio</mat-label>
+          <mat-select [(value)]="selectedCharacter" class="character-selector">
+            <mat-option *ngFor="let character of characters" [value]="character">
+              {{character.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </td>
+      <td>
+        <div>
+          <button mat-button (click)="changeCharacter()">Cambia</button>
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+<div *ngIf="showActivator">
+  <mat-label>{{sessionCharacterName}}</mat-label> (<button mat-button (click)="changeState()">Cambia personaggio</button>)
+</div>

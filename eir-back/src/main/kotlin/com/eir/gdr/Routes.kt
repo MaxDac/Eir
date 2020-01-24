@@ -16,7 +16,8 @@ object Routes {
 
     private val CHECKED_ROUTES: List<CustomRoutes> = listOf(
         ChatInfoRoutes,
-        CharacterRoutes
+        CharacterRoutes,
+        ForumRoutes
     )
 
     fun routes(vertx: Vertx, client: JDBCClient): Router {

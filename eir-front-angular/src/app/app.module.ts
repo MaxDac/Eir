@@ -36,6 +36,12 @@ import { SheetSelectionComponent } from './components/sheet/sheet-selection/shee
 import { ChatRoomsComponent } from './components/chat/chat-rooms/chat-rooms.component';
 import { ChatInputComponent } from './components/chat/chat-input/chat-input.component';
 import { ChatRowsComponent } from './components/chat/chat-rows/chat-rows.component';
+import { ForumSectionComponent } from './components/forum/forum-section/forum-section.component';
+import { ForumTopicComponent } from './components/forum/forum-topic/forum-topic.component';
+import { ForumEditPostComponent } from './components/forum/forum-edit-post/forum-edit-post.component';
+import { ForumEditTopicComponent } from './components/forum/forum-edit-topic/forum-edit-topic.component';
+import {ForumService} from './services/forum.service';
+import { CharacterSelectorComponent } from './components/character-selector/character-selector.component';
 
 @NgModule({
   declarations: [
@@ -60,7 +66,12 @@ import { ChatRowsComponent } from './components/chat/chat-rows/chat-rows.compone
     SheetSelectionComponent,
     ChatRoomsComponent,
     ChatInputComponent,
-    ChatRowsComponent
+    ChatRowsComponent,
+    ForumSectionComponent,
+    ForumTopicComponent,
+    ForumEditPostComponent,
+    ForumEditTopicComponent,
+    CharacterSelectorComponent
   ],
   imports: [
     HttpClientModule,
@@ -77,7 +88,8 @@ import { ChatRowsComponent } from './components/chat/chat-rows/chat-rows.compone
     CharacterService,
     AuthenticationService,
     CanActivateViaAuthGuard,
-    CookieService
+    CookieService,
+    ForumService
   ],
   bootstrap: [AppComponent]
 })

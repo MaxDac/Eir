@@ -101,4 +101,52 @@ object Queries {
 
     fun getChatRoomQueries(roomId: Int) =
         "$chatRoomQueries$roomId"
+
+    val getAllForumSectionsQuery =
+        "select sec.id\n" +
+                "      ,sec.name\n" +
+                "      ,sec.description\n" +
+                "  from ForumSections                    sec\n"
+
+    fun getSectionTopics(sectionId: Int) =
+        "select top.id\n" +
+                "      ,top.title\n" +
+                "      ,top.description\n" +
+                "      ,$sectionId as section_id\n" +
+                "      ,top.creation_date\n" +
+                "  from ForumTopic                           top\n" +
+                " where top.section_id                       = $sectionId\n"
+
+    fun getTopic(topicId: Int) =
+        "select top.id\n" +
+                "      ,top.title\n" +
+                "      ,top.description\n" +
+                "      ,top.section_id\n" +
+                "      ,top.creation_date\n" +
+                "  from ForumTopic                           top\n" +
+                " where top.id                               = $topicId"
+
+    fun getTopicPosts(topicId: Int) =
+        "select pst.id\n" +
+                "      ,pst.content\n" +
+                "      ,usr.id                       user_id\n" +
+                "      ,usr.username                 user_name\n" +
+                "      ,pst.topic_id                 topic_id\n" +
+                "      ,pst.creation_date\n" +
+                "  from ForumPost                    pst\n" +
+                "      ,Users                        usr\n" +
+                " where pst.topic_id                 = $topicId\n" +
+                "   and pst.user_id                  = usr.id\n"
+
+    fun getTopicPostById(id: Int) =
+        "select pst.id\n" +
+                "      ,pst.content\n" +
+                "      ,usr.id                       user_id\n" +
+                "      ,usr.username                 user_name\n" +
+                "      ,pst.topic_id                 topic_id\n" +
+                "      ,pst.creation_date\n" +
+                "  from ForumPost                    pst\n" +
+                "      ,Users                        usr\n" +
+                " where pst.id                       = $id\n" +
+                "   and pst.user_id                  = usr.id\n"
 }

@@ -1,12 +1,5 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {AuthenticationService} from '../../../services/authentication.service';
-import {CharacterService} from '../../../services/character.service';
-import {Character} from '../../../services/dtos/character';
-
-export interface ChatInputModel {
-  phrase: string;
-  characterId: number;
-}
+import {isNull} from '../../../helpers';
 
 @Component({
   selector: 'app-chat-input',
@@ -15,28 +8,26 @@ export interface ChatInputModel {
 })
 export class ChatInputComponent implements OnInit {
   phrase: string;
-  characters: Character[];
-  selectedCharacterId: number;
+
+  get phraseLength(): number {
+    if (isNull(this.phrase)) {
+      return 0;
+    } else {
+      return this.phrase.length;
+    }
+  }
 
   @Output()
-  sendingPhrase = new EventEmitter<ChatInputModel>();
+  sendingPhrase = new EventEmitter<string>();
 
-  constructor(
-    private provider: CharacterService,
-    private authenticationService: AuthenticationService
-  ) { }
+  constructor() { }
 
   ngOnInit() {
-    const userId = this.authenticationService.retrieveStoredSession().userId;
-
-    this.provider.getCharacterByUserId(userId)
-      .subscribe(cs => this.characters = cs);
   }
 
   send(_: MouseEvent) {
-    this.sendingPhrase.emit({
-      phrase: this.phrase,
-      characterId: this.selectedCharacterId
-    });
+    const p = this.phrase;
+    this.sendingPhrase.emit(p);
+    this.phrase = '';
   }
 }

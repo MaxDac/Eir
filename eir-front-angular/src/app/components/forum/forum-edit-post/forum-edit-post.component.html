@@ -1,0 +1,11 @@
+<div class="form-container">
+  <form class="topic-form">
+    <mat-form-field class="control-full-width">
+      <textarea matInput placeholder="Contenuto" [(ngModel)]="post.content" name="content"></textarea>
+    </mat-form-field>
+
+    <div class="button-container">
+      <button mat-raised-button (click)="saveTopic()">Salva</button>
+    </div>
+  </form>
+</div>

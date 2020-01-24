@@ -1,6 +1,5 @@
 package com.eir.gdr
 
-import com.eir.gdr.db.queryAsync
 import com.eir.gdr.logic.AuthenticationLogic
 import com.eir.gdr.logic.Exceptions
 import com.eir.gdr.routes.GuardRoutes

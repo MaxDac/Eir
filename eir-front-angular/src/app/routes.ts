@@ -14,6 +14,10 @@ import {ForumComponent} from './components/forum/forum.component';
 import {SheetSelectionComponent} from './components/sheet/sheet-selection/sheet-selection.component';
 import {SheetComponent} from './components/sheet/sheet.component';
 import {ChatRoomsComponent} from './components/chat/chat-rooms/chat-rooms.component';
+import {ForumSectionComponent} from './components/forum/forum-section/forum-section.component';
+import {ForumTopicComponent} from './components/forum/forum-topic/forum-topic.component';
+import {ForumEditTopicComponent} from './components/forum/forum-edit-topic/forum-edit-topic.component';
+import {ForumEditPostComponent} from './components/forum/forum-edit-post/forum-edit-post.component';
 
 export const appRoutes: Routes = [
   { path: '', component: HomeComponent, canActivate: [CanActivateViaAuthGuard] },
@@ -31,5 +35,11 @@ export const appRoutes: Routes = [
   { path: 'sheet/creation/end', component: SheetCreationEndComponent, canActivate: [CanActivateViaAuthGuard] },
   { path: 'rooms', component: ChatRoomsComponent, canActivate: [CanActivateViaAuthGuard] },
   { path: 'chat/:id', component: ChatComponent, canActivate: [CanActivateViaAuthGuard] },
-  { path: 'forum', component: ForumComponent, canActivate: [CanActivateViaAuthGuard] }
+  { path: 'forum', component: ForumComponent, canActivate: [CanActivateViaAuthGuard] },
+  { path: 'forum/section/:id', component: ForumSectionComponent, canActivate: [CanActivateViaAuthGuard] },
+  { path: 'forum/topic/create/:sectionId', component: ForumEditTopicComponent, canActivate: [CanActivateViaAuthGuard] },
+  { path: 'forum/post/create/:topicId', component: ForumEditPostComponent, canActivate: [CanActivateViaAuthGuard] },
+  { path: 'forum/topic/edit/:id', component: ForumEditTopicComponent, canActivate: [CanActivateViaAuthGuard] },
+  { path: 'forum/post/edit/:id', component: ForumEditPostComponent, canActivate: [CanActivateViaAuthGuard] },
+  { path: 'forum/topic/:id', component: ForumTopicComponent, canActivate: [CanActivateViaAuthGuard] }
 ];

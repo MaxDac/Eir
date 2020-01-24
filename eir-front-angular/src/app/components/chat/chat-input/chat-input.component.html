@@ -1,20 +1,14 @@
 <form class="example-form">
-
-  <mat-form-field class="sheet-selection-form-field">
-    <mat-label>Stanza</mat-label>
-    <mat-select [(value)]="selectedCharacterId">
-      <mat-option *ngFor="let character of characters" [value]="character.id">
-        {{character.name}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-
   <mat-form-field class="example-full-width">
-    <textarea matInput placeholder="Scrivi la frase qui" [(ngModel)]="phrase" name="phrase"></textarea>
+    <textarea matInput
+              placeholder="Scrivi la frase qui"
+              [(ngModel)]="phrase"
+              [rows]="3"
+              name="phrase"
+              class="all-sized-textarea"></textarea>
+    <mat-hint align="end">{{phraseLength}}</mat-hint>
   </mat-form-field>
-
   <div>
-    <button mat-raised-button (click)="send($event)">Invia!</button>
+    <button mat-raised-button (click)="send($event)" style="width: 100%">Invia!</button>
   </div>
-
 </form>

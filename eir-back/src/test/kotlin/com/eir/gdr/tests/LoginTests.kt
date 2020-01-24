@@ -7,6 +7,7 @@ import com.eir.gdr.tests.base.TestHelpers
 import com.eir.gdr.tests.base.awaitResult
 import io.vertx.core.Vertx
 import org.junit.Test
+import kotlin.test.assertNotNull
 
 class LoginTests {
     @Test
@@ -14,6 +15,6 @@ class LoginTests {
         val request = AuthenticationRequest("ciccillo", "bitonto")
 
         val result = AuthenticationLogic.checkLogin(request, TestHelpers.getDatabaseClient()).awaitResult()
-        assert(result == true)
+        assertNotNull(result)
     }
 }

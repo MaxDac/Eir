@@ -1,0 +1,14 @@
+<div class="buttons-top">
+  <button mat-raised-button [routerLink]="['/forum/topic/create', idSection]" class="control-button">Crea nuovo</button>
+</div>
+<div *ngFor="let t of topics">
+  <mat-card class="section-card">
+    <mat-card-header>
+      <mat-card-title><a [routerLink]="['/forum/topic', t.id]">{{t.title}}</a></mat-card-title>
+      <mat-card-subtitle>{{t.description}}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-actions>
+      <button mat-raised-button [routerLink]="['/forum/topic/edit', t.id]">MODIFICA</button>
+    </mat-card-actions>
+  </mat-card>
+</div>

@@ -1,3 +1,5 @@
 <div *ngFor="let row of rows">
-  <span>{{row.characterName}}</span> - <span>{{row.action}}</span>
+  <mat-card>
+    <span class="character-name">{{row.characterName}}</span> - <span class="phrase">{{row.action}}</span>
+  </mat-card>
 </div>

@@ -1,0 +1,15 @@
+<div class="form-container">
+  <form class="topic-form">
+    <mat-form-field class="control-full-width">
+      <input matInput placeholder="Titolo" [(ngModel)]="topic.title" name="title">
+    </mat-form-field>
+
+    <mat-form-field class="control-full-width">
+      <textarea matInput placeholder="Descrizione" [(ngModel)]="topic.description" name="description"></textarea>
+    </mat-form-field>
+
+    <div class="button-container">
+      <button mat-raised-button (click)="saveTopic()">Salva</button>
+    </div>
+  </form>
+</div>

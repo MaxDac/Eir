@@ -11,7 +11,7 @@ import io.vertx.ext.web.RoutingContext
 object GuardRoutes : CustomRoutes {
     val cookieTokenName = "x-session-cookie"
     val headerTokenName = "x-session-header"
-    val sessionExpiredInMs = 1000 * 60 * 60
+    val sessionExpiredInMs = 1000 * 60 * 60 * 24
 
     private fun checkSessionContext(ctx: RoutingContext, client: JDBCClient): Future<Boolean> =
         ctx.getUserFromSession(client)

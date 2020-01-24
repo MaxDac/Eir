@@ -1,1 +1,8 @@
-<p>forum works!</p>
+<div *ngFor="let s of sections">
+  <mat-card class="section-card">
+    <mat-card-header>
+      <mat-card-title><a [routerLink]="['/forum/section', s.id]">{{s.name}}</a></mat-card-title>
+      <mat-card-subtitle>{{s.description}}</mat-card-subtitle>
+    </mat-card-header>
+  </mat-card>
+</div>

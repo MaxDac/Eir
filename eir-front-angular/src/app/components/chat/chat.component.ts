@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthenticationService} from '../../services/authentication.service';
 import {ActivatedRoute} from '@angular/router';
-import {ChatInputModel} from './chat-input/chat-input.component';
 import {ChatEntry} from '../../services/dtos/chat-entry';
 
 declare var EventBus: any;
@@ -35,7 +34,15 @@ export class ChatComponent implements OnInit {
         if (error !== undefined && error !== null) {
           console.error(`Error! ${JSON.stringify(error)}`);
         } else {
-          this.currentValue = JSON.parse(message.body);
+          let remoteValue: ChatEntry[] = JSON.parse(message.body);
+          remoteValue = remoteValue.sort((x1, x2) => {
+            if (x1.creationDate > x2.creationDate) {
+              return -1;
+            } else {
+              return 1;
+            }
+          });
+          this.currentValue = remoteValue;
         }
       });
     };
@@ -49,11 +56,13 @@ export class ChatComponent implements OnInit {
       });
   }
 
-  onSendPhrase(phrase: ChatInputModel) {
+  onSendPhrase(phrase: string) {
+    const characterId = this.authenticationService.retrieveStoredSession().characterId;
+
     const request = {
       roomId: this.roomId,
-      characterId: phrase.characterId,
-      action: phrase.phrase
+      characterId,
+      action: phrase
     };
 
     console.log(`Sending ${JSON.stringify(request)}`);

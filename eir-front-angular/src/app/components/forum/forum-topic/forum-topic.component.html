@@ -1,0 +1,19 @@
+<div class="buttons-top">
+  <button mat-raised-button [routerLink]="['/forum/post/create', idTopic]" class="control-button">Nuovo post</button>
+</div>
+<div *ngFor="let t of posts">
+  <mat-card class="topic-card">
+    <mat-card-header>
+      <mat-card-title>{{t.user.username}}</mat-card-title>
+      <mat-card-subtitle>{{t.user.email}}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <p>
+        {{t.content}}
+      </p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button [routerLink]="['/forum/post/edit', t.id]">MODIFICA</button>
+    </mat-card-actions>
+  </mat-card>
+</div>
