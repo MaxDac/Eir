@@ -1,2 +1,68 @@
-<p>sheet works!</p>
-<div [innerHTML]="character.name"></div>
+<table>
+  <tr>
+    <td>
+      <table>
+        <tr>
+          <td width="200px">
+
+          </td>
+          <td>
+            Name: {{character.name}}
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <table>
+        <tr>
+          <td>
+            <table>
+              <tr *ngFor="let c of character.martialAttributes">
+                <td>
+                  <app-sheet-attribute-selector [characteristic]="c"></app-sheet-attribute-selector>
+                </td>
+              </tr>
+            </table>
+          </td>
+          <td>
+            <table>
+              <tr *ngFor="let c of character.mentalAttributes">
+                <td>
+                  <app-sheet-attribute-selector [characteristic]="c"></app-sheet-attribute-selector>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <table>
+        <tr>
+          <td>
+            <table>
+              <tr *ngFor="let c of character.martialAbilities">
+                <td>
+                  <app-sheet-attribute-selector [characteristic]="c"></app-sheet-attribute-selector>
+                </td>
+              </tr>
+            </table>
+          </td>
+          <td>
+            <table>
+              <tr *ngFor="let c of character.mentalAbilities">
+                <td>
+                  <app-sheet-attribute-selector [characteristic]="c"></app-sheet-attribute-selector>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>

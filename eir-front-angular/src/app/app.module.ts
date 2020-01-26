@@ -44,6 +44,7 @@ import {ForumService} from './services/forum.service';
 import { CharacterSelectorComponent } from './components/character-selector/character-selector.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { SheetAttributeSelectorComponent } from './components/sheet/sheet-attribute-selector/sheet-attribute-selector.component';
 
 @NgModule({
   declarations: [
@@ -73,7 +74,8 @@ import { environment } from '../environments/environment';
     ForumTopicComponent,
     ForumEditPostComponent,
     ForumEditTopicComponent,
-    CharacterSelectorComponent
+    CharacterSelectorComponent,
+    SheetAttributeSelectorComponent
   ],
   imports: [
     HttpClientModule,

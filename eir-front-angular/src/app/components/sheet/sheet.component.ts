@@ -20,7 +20,10 @@ export class SheetComponent implements OnInit {
     this.route.paramMap
       .map(x => x.get('id'))
       .flatMap(id => this.service.getCharacterById(Number(id)))
-      .subscribe(x => this.character = x);
+      .subscribe(x => {
+        console.log(`character: ${JSON.stringify(x)}`);
+        this.character = x
+      });
   }
 
 }

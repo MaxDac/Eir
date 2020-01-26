@@ -1,0 +1,16 @@
+<table>
+  <tr>
+    <td style="min-width: 150px;">
+      {{characteristic.name}}
+    </td>
+    <td>
+      <mat-chip-list aria-label="Attribute controller">
+        <mat-chip
+          color="accent"
+          (click)="increaseCharacteristic()"
+          [disabled]="isDisabled">{{characteristic.value}}</mat-chip>
+      </mat-chip-list>
+    </td>
+  </tr>
+</table>
+
