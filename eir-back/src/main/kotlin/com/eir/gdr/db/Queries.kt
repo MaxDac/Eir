@@ -97,10 +97,14 @@ object Queries {
             "      ,ch.name\n" +
             "  from ChatEntries                      ce\n" +
             "      ,Character                        ch\n" +
-            " where room_id                          = "
+            " where ce.character_id                  = ch.id" +
+            "   and room_id                          = "
+
+    private val chatRoomQueriesLimit =
+        " order by creation_date desc limit 20"
 
     fun getChatRoomQueries(roomId: Int) =
-        "$chatRoomQueries$roomId"
+        "$chatRoomQueries$roomId$chatRoomQueriesLimit"
 
     val getAllForumSectionsQuery =
         "select sec.id\n" +

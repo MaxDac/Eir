@@ -31,6 +31,7 @@ export class SheetCreationEndComponent implements OnInit {
     this.client.saveCharacter(prepareForSave(this.character))
       .subscribe(x => {
         console.log(x);
+        this.router.navigate(['']);
       });
   }
 

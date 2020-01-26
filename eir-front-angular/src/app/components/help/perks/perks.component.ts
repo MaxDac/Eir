@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Perk} from '../../../services/dtos/perk';
 import {HelpService} from '../../../services/help.service';
+import {isNull} from '../../../helpers';
 
 @Component({
   selector: 'app-perks',
@@ -26,6 +27,10 @@ export class PerksComponent implements OnInit {
         this.perks = p;
         this.loaded = true;
       });
+  }
+
+  hasAffectedCharacteristics(p: Perk) {
+    return !isNull(p.affectedCharacteristic) && p.affectedCharacteristic.length > 0;
   }
 
 }

@@ -8,7 +8,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "deploy": "ng build --prod --output-path dist"
+    "deploy": "ng build --prod --configuration=production"
   },
   "private": true,
   "dependencies": {
@@ -22,7 +22,10 @@
     "@angular/material": "^8.2.3",
     "@angular/platform-browser": "~8.2.4",
     "@angular/platform-browser-dynamic": "~8.2.4",
+    "@angular/pwa": "^0.803.23",
     "@angular/router": "~8.2.4",
+    "@angular/service-worker": "~8.2.4",
+    "angular": "^1.7.9",
     "font-awesome": "^4.7.0",
     "hammerjs": "^2.0.8",
     "ngx-cookie-service": "^2.3.0",

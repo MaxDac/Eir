@@ -213,7 +213,6 @@
     </column>
     <index id="60" parent="10" name="Characteristics_name_uindex">
       <ColNames>name</ColNames>
-      <ColumnCollations></ColumnCollations>
       <Unique>1</Unique>
     </index>
     <key id="61" parent="10" name="Characteristics_pk">

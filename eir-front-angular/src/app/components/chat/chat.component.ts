@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {AuthenticationService} from '../../services/authentication.service';
 import {ActivatedRoute} from '@angular/router';
 import {ChatEntry} from '../../services/dtos/chat-entry';
+import {environment} from '../../../environments/environment';
 
 declare var EventBus: any;
 
@@ -28,7 +29,7 @@ export class ChatComponent implements OnInit {
       room: '1'
     };
 
-    this.eventBus = new EventBus(`http://localhost:8080/Api/Chat/${roomId}`, tokens);
+    this.eventBus = new EventBus(`${environment.baseUrl}/Chat/${roomId}`, tokens);
     this.eventBus.onopen = () => {
       this.eventBus.registerHandler('out', tokens, (error, message) => {
         if (error !== undefined && error !== null) {

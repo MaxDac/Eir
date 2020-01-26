@@ -5,6 +5,7 @@ import {catchError} from 'rxjs/operators';
 import {Injectable} from '@angular/core';
 import {SessionTokens} from './dtos/session-tokens';
 import {isNull} from '../helpers';
+import {environment} from '../../environments/environment';
 
 interface AppHttpOptions {
   headers?: HttpHeaders;
@@ -22,7 +23,7 @@ export class HttpWrapperService {
 
   constructor(public http: HttpClient) {}
 
-  private baseUrl = 'http://localhost:8080/Api';
+  private baseUrl = `${this.hostFromConfiguration()}${environment.baseUrl}`;
 
   private readonly httpOptions: AppHttpOptions = {
     headers: new HttpHeaders({
@@ -33,6 +34,12 @@ export class HttpWrapperService {
 
   private static errorHandler(error: HttpErrorResponse) {
     return throwError(error.message);
+  }
+
+  private hostFromConfiguration() {
+    const parts = window.location.href.split(':');
+    console.log(`splitted: ${JSON.stringify(parts)}`);
+    return `${parts[0]}:${parts[1]}`;
   }
 
   private authenticationOptions(tokens: SessionTokens): AppHttpOptions {

@@ -1,0 +1,92 @@
+{
+  "configVersion": 1,
+  "timestamp": 1579993312306,
+  "index": "/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "urls": [
+        "/favicon.ico",
+        "/index.html",
+        "/main-es2015.c14c0498b92e0c3338d4.js",
+        "/main-es5.c14c0498b92e0c3338d4.js",
+        "/manifest.webmanifest",
+        "/polyfills-es2015.e320bd3f95e5b05465ac.js",
+        "/polyfills-es5.a93b8c42adaa0606b64f.js",
+        "/runtime-es2015.edb2fcf2778e7bf1d426.js",
+        "/runtime-es5.edb2fcf2778e7bf1d426.js",
+        "/scripts.f2f002a99aa0f71bc45e.js",
+        "/styles.ab00b2cec26586b8f4f5.css"
+      ],
+      "patterns": []
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "urls": [
+        "/assets/icons/icon-128x128.png",
+        "/assets/icons/icon-144x144.png",
+        "/assets/icons/icon-152x152.png",
+        "/assets/icons/icon-192x192.png",
+        "/assets/icons/icon-384x384.png",
+        "/assets/icons/icon-512x512.png",
+        "/assets/icons/icon-72x72.png",
+        "/assets/icons/icon-96x96.png",
+        "/fontawesome-webfont.674f50d287a8c48dc19b.eot",
+        "/fontawesome-webfont.912ec66d7572ff821749.svg",
+        "/fontawesome-webfont.af7ae505a9eed503f8b8.woff2",
+        "/fontawesome-webfont.b06871f281fee6b241d6.ttf",
+        "/fontawesome-webfont.fee66e712a8a08eef580.woff"
+      ],
+      "patterns": []
+    }
+  ],
+  "dataGroups": [],
+  "hashTable": {
+    "/assets/icons/icon-128x128.png": "dae3b6ed49bdaf4327b92531d4b5b4a5d30c7532",
+    "/assets/icons/icon-144x144.png": "b0bd89982e08f9bd2b642928f5391915b74799a7",
+    "/assets/icons/icon-152x152.png": "7479a9477815dfd9668d60f8b3b2fba709b91310",
+    "/assets/icons/icon-192x192.png": "1abd80d431a237a853ce38147d8c63752f10933b",
+    "/assets/icons/icon-384x384.png": "329749cd6393768d3131ed6304c136b1ca05f2fd",
+    "/assets/icons/icon-512x512.png": "559d9c4318b45a1f2b10596bbb4c960fe521dbcc",
+    "/assets/icons/icon-72x72.png": "c457e56089a36952cd67156f9996bc4ce54a5ed9",
+    "/assets/icons/icon-96x96.png": "3914125a4b445bf111c5627875fc190f560daa41",
+    "/favicon.ico": "22f6a4a3bcaafafb0254e0f2fa4ceb89e505e8b2",
+    "/fontawesome-webfont.674f50d287a8c48dc19b.eot": "d980c2ce873dc43af460d4d572d441304499f400",
+    "/fontawesome-webfont.912ec66d7572ff821749.svg": "98a8aa5cf7d62c2eff5f07ede8d844b874ef06ed",
+    "/fontawesome-webfont.af7ae505a9eed503f8b8.woff2": "d6f48cba7d076fb6f2fd6ba993a75b9dc1ecbf0c",
+    "/fontawesome-webfont.b06871f281fee6b241d6.ttf": "13b1eab65a983c7a73bc7997c479d66943f7c6cb",
+    "/fontawesome-webfont.fee66e712a8a08eef580.woff": "28b782240b3e76db824e12c02754a9731a167527",
+    "/index.html": "bae7d3f87bf821c42d864483c32992a016fc847d",
+    "/main-es2015.c14c0498b92e0c3338d4.js": "1e20c195687c2edaca65d61af2a5f71bad8ac788",
+    "/main-es5.c14c0498b92e0c3338d4.js": "c782a79c83b14d04275a9178c9bff02ab63a0c80",
+    "/manifest.webmanifest": "44f2b7fddc9749ac1c324261146ab58d9d9f282a",
+    "/polyfills-es2015.e320bd3f95e5b05465ac.js": "a0862b13f67073a295a596fc530b242b58dafb8f",
+    "/polyfills-es5.a93b8c42adaa0606b64f.js": "5a878471ebff40b6ed7915174437e2c310956182",
+    "/runtime-es2015.edb2fcf2778e7bf1d426.js": "a9aafcf49f49145093fc831efd9b8e2f6c71bb9c",
+    "/runtime-es5.edb2fcf2778e7bf1d426.js": "a9aafcf49f49145093fc831efd9b8e2f6c71bb9c",
+    "/scripts.f2f002a99aa0f71bc45e.js": "d38f39dea23f395f7a037f2cbf98f740392cdb70",
+    "/styles.ab00b2cec26586b8f4f5.css": "691e94455830aa6e9bed7b7891b909756aa24b13"
+  },
+  "navigationUrls": [
+    {
+      "positive": true,
+      "regex": "^\\/.*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*\\.[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*\\/.*$"
+    }
+  ]
+}

@@ -67,7 +67,7 @@ class ExtensionTests {
 
     @Test
     fun md5Test() {
-        val password = "bitonto"
+        val password = "pirla"
         val encryptedPassword = password.toMD5()
         val secondEncryptedPassword = password.toMD5()
         assertNotNull(encryptedPassword)

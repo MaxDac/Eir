@@ -34,7 +34,7 @@ java {
 }
 
 application {
-    mainClassName = "com.rhodes.gallery.backend.MainKt"
+    mainClassName = "com.eir.gdr.MainKt"
 }
 
 val fatJar = task("fatJar", type = Jar::class) {
@@ -42,7 +42,7 @@ val fatJar = task("fatJar", type = Jar::class) {
     manifest {
         attributes["Implementation-Title"] = "Rhodes Gallery Fat Jar"
         attributes["Implementation-Version"] = version
-        attributes["Main-Class"] = "com.rhodes.gallery.backend.MainKt"
+        attributes["Main-Class"] = "com.eir.gdr.MainKt"
     }
     val from = from(configurations.runtimeClasspath.get()
         .map { if (it.isDirectory) it else zipTree(it) })

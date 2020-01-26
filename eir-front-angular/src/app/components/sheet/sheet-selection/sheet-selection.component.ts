@@ -23,11 +23,11 @@ export class SheetSelectionComponent implements OnInit {
     const session = this.authenticationService.retrieveStoredSession();
     this.service.getCharacterByUserId(session.userId)
       .subscribe(cs => {
-        if (cs.length === 1) {
-          this.router.navigate(['sheet', cs[0].id]);
-        } else {
+        // if (cs.length === 1) {
+        //   this.router.navigate(['sheet', cs[0].id]);
+        // } else {
           this.characters = cs;
-        }
+        // }
       });
   }
 

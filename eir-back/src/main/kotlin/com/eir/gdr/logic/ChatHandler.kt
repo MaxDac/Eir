@@ -78,6 +78,7 @@ class ChatHandler(
 
         if (event?.type() == BridgeEventType.SEND) {
             try {
+                logger.info("this is the body: ${event.rawMessage.map["body"]}")
                 val body = event.rawMessage.map["body"] as HashMap<String, Any>
                 val decoded = ChatEntryRequest(
                     body.get("roomId").toString().toInt(),

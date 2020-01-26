@@ -40,6 +40,10 @@ export class AuthenticationService {
     }
   }
 
+  deleteStoredSession() {
+    this.cookieService.delete(this.SESSION_COOKIE_KEY);
+  }
+
   login(request: AuthenticationRequest): Observable<SessionTokens> {
     return this.provider.post<SessionTokens>('/Login', request)
       .map(x => {

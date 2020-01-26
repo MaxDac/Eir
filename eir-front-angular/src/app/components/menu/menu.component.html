@@ -20,6 +20,10 @@
         <mat-icon>forum</mat-icon>
         <span>Forum</span>
       </button>
+      <button mat-menu-item (click)="logoff()">
+        <mat-icon>logout</mat-icon>
+        <span>Logoff</span>
+      </button>
     </mat-menu>
     <mat-menu #manual="matMenu">
       <button mat-menu-item [routerLink]="['/help/characteristics']">

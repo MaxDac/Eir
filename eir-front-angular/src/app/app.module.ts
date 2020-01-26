@@ -42,6 +42,8 @@ import { ForumEditPostComponent } from './components/forum/forum-edit-post/forum
 import { ForumEditTopicComponent } from './components/forum/forum-edit-topic/forum-edit-topic.component';
 import {ForumService} from './services/forum.service';
 import { CharacterSelectorComponent } from './components/character-selector/character-selector.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -80,7 +82,8 @@ import { CharacterSelectorComponent } from './components/character-selector/char
     BrowserAnimationsModule,
     MaterialModule,
     RouterModule.forRoot(appRoutes, {enableTracing: true}),
-    FormsModule
+    FormsModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [
     HttpWrapperService,
