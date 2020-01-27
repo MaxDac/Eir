@@ -6,6 +6,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {tryGetState} from '../../../base/route-utils';
 import {checkCharacterState, divideCharacteristics, mapCharacteristicForSave, setCharacterState} from '../sheet-creation-helpers';
 import {CookieService} from 'ngx-cookie-service';
+import {StorageService} from '../../../services/storage-service';
 
 @Component({
   selector: 'app-sheet-creation-abilities',
@@ -38,11 +39,11 @@ export class SheetCreationAbilitiesComponent implements OnInit {
     private client: HelpService,
     private router: Router,
     private route: ActivatedRoute,
-    private cookieService: CookieService
+    private storageService: StorageService
   ) { }
 
   ngOnInit(): void {
-    this.character = checkCharacterState(this.cookieService, this.router, 2);
+    this.character = checkCharacterState(this.storageService, this.router, 2);
 
     this.client.getAbilities()
       .subscribe(x => {
@@ -60,7 +61,7 @@ export class SheetCreationAbilitiesComponent implements OnInit {
         .filter(x => x.value !== 0 && x.type === MentalAttribute)
         .map(mapCharacteristicForSave);
 
-      setCharacterState(this.cookieService, this.character);
+      setCharacterState(this.storageService, this.character);
       this.router.navigate(['sheet/creation/perks'], {
         state: this.character
       });
@@ -74,7 +75,7 @@ export class SheetCreationAbilitiesComponent implements OnInit {
   goBack() {
     this.character.martialAttributes = null;
     this.character.mentalAttributes = null;
-    setCharacterState(this.cookieService, this.character);
+    setCharacterState(this.storageService, this.character);
     this.router.navigate(['sheet/creation/attributes'], {
       state: this.character
     });

@@ -1,0 +1,21 @@
+.sheet-container {
+  margin: 0 auto;
+}
+
+.sheet-title {
+  text-align: center;
+}
+
+.avatar-background {
+  width: 200px;
+  height: 200px;
+  text-align: center;
+  background-color: black;
+  border: 2px double #777777;
+}
+
+.avatar {
+  max-width: 200px;
+  max-height: 200px;
+  height: auto;
+}

@@ -3,7 +3,7 @@ package com.eir.gdr.tests
 import com.eir.gdr.entities.forum.ForumTopicRequest
 import com.eir.gdr.logic.ForumLogic
 import com.eir.gdr.tests.base.TestHelpers
-import com.eir.gdr.tests.base.awaitResult
+import com.eir.gdr.awaitResult
 import org.junit.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import kotlin.test.assertEquals

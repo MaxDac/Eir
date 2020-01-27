@@ -3,6 +3,9 @@ import {AuthenticationService} from '../../services/authentication.service';
 import {ActivatedRoute} from '@angular/router';
 import {ChatEntry} from '../../services/dtos/chat-entry';
 import {environment} from '../../../environments/environment';
+import {HttpWrapperService} from '../../services/http-wrapper.service';
+import {WebsocketWrapperService} from '../../services/websocket-wrapper.service';
+import {DiceThrow} from './chat-input/chat-input.component';
 
 declare var EventBus: any;
 
@@ -18,35 +21,26 @@ export class ChatComponent implements OnInit {
 
   constructor(
     private authenticationService: AuthenticationService,
+    private socketService: WebsocketWrapperService,
     private route: ActivatedRoute
   ) { }
 
   private registerHandler(roomId: string) {
-    const auth = this.authenticationService.retrieveStoredSession();
-    const tokens = {
-      'x-session-header': auth.headerToken,
-      'x-session-cookie': auth.cookieToken,
-      room: '1'
-    };
-
-    this.eventBus = new EventBus(`${environment.baseUrl}/Chat/${roomId}`, tokens);
-    this.eventBus.onopen = () => {
-      this.eventBus.registerHandler('out', tokens, (error, message) => {
-        if (error !== undefined && error !== null) {
-          console.error(`Error! ${JSON.stringify(error)}`);
-        } else {
-          let remoteValue: ChatEntry[] = JSON.parse(message.body);
-          remoteValue = remoteValue.sort((x1, x2) => {
-            if (x1.creationDate > x2.creationDate) {
-              return -1;
-            } else {
-              return 1;
-            }
-          });
-          this.currentValue = remoteValue;
-        }
-      });
-    };
+    this.eventBus = this.socketService.createWebSocket(this.roomId, (error, message) => {
+      if (error !== undefined && error !== null) {
+        console.error(`Error! ${JSON.stringify(error)}`);
+      } else {
+        let remoteValue: ChatEntry[] = JSON.parse(message.body);
+        remoteValue = remoteValue.sort((x1, x2) => {
+          if (x1.creationDate > x2.creationDate) {
+            return -1;
+          } else {
+            return 1;
+          }
+        });
+        this.currentValue = remoteValue;
+      }
+    });
   }
 
   ngOnInit() {
@@ -55,6 +49,10 @@ export class ChatComponent implements OnInit {
         this.roomId = p.get('id');
         this.registerHandler(this.roomId);
       });
+  }
+
+  private sendWebSocketRequest(request: any) {
+    this.eventBus.send('in', request);
   }
 
   onSendPhrase(phrase: string) {
@@ -67,7 +65,23 @@ export class ChatComponent implements OnInit {
     };
 
     console.log(`Sending ${JSON.stringify(request)}`);
+    this.sendWebSocketRequest(request);
+  }
 
-    this.eventBus.send('in', request);
+  onSendDices(dices: DiceThrow) {
+    console.log(`receiving request: ${JSON.stringify(dices)}`);
+    const characterId = this.authenticationService.retrieveStoredSession().characterId;
+
+    const request = {
+      roomId: this.roomId,
+      characterId,
+      action: '',
+      attributeId: dices.attributeId,
+      abilityId: dices.abilityId,
+      cd: dices.cd
+    };
+
+    console.log(`Sending ${JSON.stringify(request)}`);
+    this.sendWebSocketRequest(request);
   }
 }

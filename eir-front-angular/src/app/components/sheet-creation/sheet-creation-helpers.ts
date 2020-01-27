@@ -1,7 +1,8 @@
 import {Characteristic, MartialAttribute, MentalAttribute} from '../../services/dtos/characteristic';
-import {CookieService} from 'ngx-cookie-service';
 import {Router} from '@angular/router';
 import {Character} from '../../services/dtos/character';
+import {Race} from '../../services/dtos/race';
+import {StorageService} from '../../services/storage-service';
 
 export const CHARACTER_COOKIE_KEY = 'app-character';
 
@@ -32,6 +33,7 @@ export function tryParse<T>(serialized: string): T | null {
       return returnValue;
     }
   } catch (e) {
+    console.error(`Attenzione!: ${e}`);
     return null;
   }
 }
@@ -44,12 +46,12 @@ export function isNullOrEmpty(s: string): boolean {
   return isNull(s) || s === '';
 }
 
-export function resetCache(service: CookieService) {
+export function resetCache(service: StorageService) {
   service.delete(CHARACTER_COOKIE_KEY);
 }
 
-export function setCharacterState(service: CookieService, character: Character) {
-  service.set(CHARACTER_COOKIE_KEY, JSON.stringify(character));
+export function setCharacterState(service: StorageService, character: Character) {
+  service.store(CHARACTER_COOKIE_KEY, JSON.stringify(character));
 }
 
 export function mapCharacteristicForSave(c: Characteristic): Characteristic {
@@ -62,7 +64,7 @@ export function mapCharacteristicForSave(c: Characteristic): Characteristic {
   };
 }
 
-export function checkCharacterState(service: CookieService, router: Router, step: number): Character | null {
+export function checkCharacterState(service: StorageService, router: Router, step: number): Character | null {
   const returnToStart = (r: Router) => {
     if (step !== 0) {
       r.navigate(['sheet/creation']);
@@ -75,23 +77,33 @@ export function checkCharacterState(service: CookieService, router: Router, step
     });
   };
 
-  const serializedCharacter = service.get(CHARACTER_COOKIE_KEY);
+  const serializedCharacter = service.getString(CHARACTER_COOKIE_KEY);
 
-  if (serializedCharacter === undefined || serializedCharacter === null || serializedCharacter === '') {
+  console.info(`serialized character: ${serializedCharacter}`);
+
+  if (isNullOrEmpty(serializedCharacter)) {
+    console.error('Character null');
     returnToStart(router);
     return null;
   }
 
   const character = tryParse<Character>(serializedCharacter);
   if (character === null) {
-    console.log('Failed to deserialize character');
+    console.error('Failed to deserialize character');
     returnToStart(router);
     return null;
   }
 
+  console.info(`p: ${character[0]}`);
+  console.info(`name: ${character.name}`);
+  console.info(`type: ${JSON.stringify(character.type)}`);
+  console.info(`fatherRace: ${JSON.stringify(character.fatherRace)}`);
+  console.info(`motherRace: ${JSON.stringify(character.motherRace)}`);
+
   const hasFirstStep = !isNullOrEmpty(character.name) &&
     !isNull(character.type) &&
-    !isNull(character.race);
+    !isNull(character.fatherRace) &&
+    !isNull(character.motherRace);
 
   const hasSecondStep = hasFirstStep &&
     !isNull(character.martialAttributes) &&
@@ -112,16 +124,31 @@ export function checkCharacterState(service: CookieService, router: Router, step
     !isNull(character.perks);
 
   if (hasFourthStep) {
+    console.info('hasFourthStep');
     if (step !== 4) { goToLink(router, 'sheet/creation/end', character); } else { return character; }
   } else if (hasThirdStep) {
+    console.info('hasThirdStep');
     if (step !== 3) { goToLink(router, 'sheet/creation/perks', character); } else { return character; }
   } else if (hasSecondStep) {
     if (step !== 2) { goToLink(router, 'sheet/creation/abilities', character); } else { return character; }
   } else if (hasFirstStep) {
+    console.info('hasFirstStep');
     if (step !== 1) { goToLink(router, 'sheet/creation/attributes', character); } else { return character; }
   } else if (step !== 0) {
     returnToStart(router);
   } else {
     return character;
+  }
+}
+
+export function getCompleteRace(selectedFatherRace: Race, selectedMotherRace: Race, hasModifiers: boolean): string {
+  if (isNull(selectedFatherRace) || isNull(selectedMotherRace)) {
+    return '';
+  } else if (selectedFatherRace.id === selectedMotherRace.id) {
+    return selectedFatherRace.name;
+  } else if (!hasModifiers) {
+    return 'Mezzosangue';
+  } else {
+    return `${selectedFatherRace.name}/${selectedMotherRace.name}`;
   }
 }

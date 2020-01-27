@@ -45,6 +45,10 @@ import { CharacterSelectorComponent } from './components/character-selector/char
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { SheetAttributeSelectorComponent } from './components/sheet/sheet-attribute-selector/sheet-attribute-selector.component';
+import {WebsocketWrapperService} from './services/websocket-wrapper.service';
+import { SheetUpdateComponent } from './components/sheet/sheet-update/sheet-update.component';
+import { ChatInputDicesComponent } from './components/chat/chat-input-dices/chat-input-dices.component';
+import {StorageService} from './services/storage-service';
 
 @NgModule({
   declarations: [
@@ -75,7 +79,12 @@ import { SheetAttributeSelectorComponent } from './components/sheet/sheet-attrib
     ForumEditPostComponent,
     ForumEditTopicComponent,
     CharacterSelectorComponent,
-    SheetAttributeSelectorComponent
+    SheetAttributeSelectorComponent,
+    SheetUpdateComponent,
+    ChatInputDicesComponent
+  ],
+  entryComponents: [
+    ChatInputDicesComponent
   ],
   imports: [
     HttpClientModule,
@@ -89,10 +98,12 @@ import { SheetAttributeSelectorComponent } from './components/sheet/sheet-attrib
   ],
   providers: [
     HttpWrapperService,
+    AuthenticationService,
+    WebsocketWrapperService,
     HelpService,
     CharacterService,
-    AuthenticationService,
     CanActivateViaAuthGuard,
+    StorageService,
     CookieService,
     ForumService
   ],

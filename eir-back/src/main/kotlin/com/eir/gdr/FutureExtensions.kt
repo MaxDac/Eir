@@ -1,4 +1,4 @@
-package com.eir.gdr.tests.base
+package com.eir.gdr
 
 import io.vertx.core.Future
 import io.vertx.core.Promise
@@ -20,7 +20,8 @@ fun <T> async(handler: (Promise<T>) -> Unit): Future<T> = Future.future<T> { p -
 sealed class FutureDuration {
     companion object {
         val infinite: FutureDuration = Infinite
-        fun seconds(sec: Int): FutureDuration = Seconds(sec)
+        fun seconds(sec: Int): FutureDuration =
+            Seconds(sec)
     }
 }
 

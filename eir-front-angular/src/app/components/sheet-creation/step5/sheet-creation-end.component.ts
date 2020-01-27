@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {Character, prepareForSave} from '../../../services/dtos/character';
-import {checkCharacterState, setCharacterState} from '../sheet-creation-helpers';
-import {CookieService} from 'ngx-cookie-service';
+import {checkCharacterState, getCompleteRace, setCharacterState} from '../sheet-creation-helpers';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CharacterService} from '../../../services/character.service';
 import {Characteristic} from '../../../services/dtos/characteristic';
+import {StorageService} from '../../../services/storage-service';
 
 @Component({
   selector: 'app-sheet-creation-end',
@@ -16,19 +16,25 @@ export class SheetCreationEndComponent implements OnInit {
   get characterAttributes(): Characteristic[] { return this.character.martialAttributes.concat(this.character.mentalAttributes); }
   get characterAbilities(): Characteristic[] { return this.character.martialAbilities.concat(this.character.mentalAbilities); }
 
+  get completeRace(): string {
+    return getCompleteRace(this.character.fatherRace, this.character.motherRace, this.character.hasModifiers);
+  }
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private cookieService: CookieService,
+    private storageService: StorageService,
     private client: CharacterService
   ) { }
 
   ngOnInit() {
-    this.character = checkCharacterState(this.cookieService, this.router, 4);
+    this.character = checkCharacterState(this.storageService, this.router, 4);
   }
 
   proceed() {
-    this.client.saveCharacter(prepareForSave(this.character))
+    const request = prepareForSave(this.character);
+    console.log(`Sending for save ${JSON.stringify(request)}`);
+    this.client.saveCharacter(request)
       .subscribe(x => {
         console.log(x);
         this.router.navigate(['']);
@@ -37,7 +43,7 @@ export class SheetCreationEndComponent implements OnInit {
 
   goBack() {
     this.character.perks = null;
-    setCharacterState(this.cookieService, this.character);
+    setCharacterState(this.storageService, this.character);
     this.router.navigate(['sheet/creation/perks'], {
       state: this.character
     });

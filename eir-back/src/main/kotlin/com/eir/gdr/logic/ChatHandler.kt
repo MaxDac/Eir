@@ -3,6 +3,8 @@ package com.eir.gdr.logic
 import com.eir.gdr.bind
 import com.eir.gdr.entities.chat.ChatEntry
 import com.eir.gdr.entities.chat.ChatEntryRequest
+import com.eir.gdr.tryGetInt
+import com.eir.gdr.tryGetString
 import io.vertx.core.Handler
 import io.vertx.core.eventbus.EventBus
 import io.vertx.core.json.Json
@@ -81,9 +83,12 @@ class ChatHandler(
                 logger.info("this is the body: ${event.rawMessage.map["body"]}")
                 val body = event.rawMessage.map["body"] as HashMap<String, Any>
                 val decoded = ChatEntryRequest(
-                    body.get("roomId").toString().toInt(),
-                    body.get("characterId").toString().toInt(),
-                    body.get("action").toString()
+                    body.tryGetInt("roomId"),
+                    body.tryGetInt("characterId"),
+                    body.tryGetString("action"),
+                    body.tryGetInt("attributeId"),
+                    body.tryGetInt("abilityId"),
+                    body.tryGetInt("cd")
                 )
                 clientToServer(decoded)
             }

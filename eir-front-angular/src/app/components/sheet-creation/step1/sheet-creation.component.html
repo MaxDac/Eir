@@ -5,7 +5,7 @@
 
   <div class="centered-control-container">
     <mat-form-field class="formatted-control">
-      <input matInput type="text" placeholder="Seleziona il nome del personaggio" [(ngModel)]="name">
+      <input matInput type="text" placeholder="Nome del personaggio" [(ngModel)]="name" class="form-control">
       <button mat-button *ngIf="name" matSuffix mat-icon-button aria-label="Clear" (click)="name=''">
         <mat-icon>close</mat-icon>
       </button>
@@ -14,7 +14,7 @@
 
   <div class="centered-control-container">
     <mat-form-field class="formatted-control">
-      <mat-select placeholder="Seleziona il tipo di personaggio" [(ngModel)]="selectedType">
+      <mat-select placeholder="Tipo di personaggio" [(ngModel)]="selectedType" class="form-control">
         <mat-option *ngFor="let type of characteristicTypes" [value]="type">{{type.name}}</mat-option>
       </mat-select>
     </mat-form-field>
@@ -22,15 +22,26 @@
 
   <div class="centered-control-container">
     <mat-form-field class="formatted-control">
-      <mat-select placeholder="Seleziona la sua razza" [(ngModel)]="selectedRace">
+      <mat-select placeholder="Razza del padre" [(ngModel)]="selectedFatherRace" class="form-control">
         <mat-option *ngFor="let race of races" [value]="race">{{race.name}}</mat-option>
       </mat-select>
     </mat-form-field>
-  </div>
+
+    <div class="centered-control-container">
+      <mat-form-field class="formatted-control">
+        <mat-select placeholder="Razza della madre" [(ngModel)]="selectedMotherRace" class="form-control">
+          <mat-option *ngFor="let race of races" [value]="race">{{race.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="centered-control-container" *ngIf="showModifiersSelector">
+      <mat-checkbox [(ngModel)]="hasModifiers">Vuoi applicare i modificatori di razza?</mat-checkbox>
+    </div>
 
   <div>
     <span [innerHTML]="name"></span> sar&agrave; un
-    <span [innerHTML]="selectedRace === undefined ? '' : selectedRace.name"></span>&nbsp;
+    <span [innerHTML]="completeRace"></span>&nbsp;
     <span [innerHTML]="selectedType === undefined ? '' : selectedType.name"></span>, confermi questa scelta?
   </div>
 

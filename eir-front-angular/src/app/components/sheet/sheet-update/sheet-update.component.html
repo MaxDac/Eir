@@ -1,0 +1,31 @@
+<div class="sheet-update-container">
+  <mat-card class="sheet-update-card">
+    <mat-form-field class="sheet-update-form-field">
+      <input matInput placeholder="Nome completo" [(ngModel)]="character.fullName">
+    </mat-form-field>
+
+    <mat-form-field class="sheet-update-form-field">
+      <input matInput placeholder="Avatar url" [(ngModel)]="character.photoUrl">
+    </mat-form-field>
+
+    <mat-form-field class="sheet-update-form-field">
+      <textarea
+        matInput
+        placeholder="Descrizione"
+        [(ngModel)]="character.description"
+        [rows]="5"></textarea>
+    </mat-form-field>
+
+    <mat-form-field class="sheet-update-form-field">
+      <textarea
+        matInput
+        placeholder="Background"
+        [(ngModel)]="character.background"
+        [rows]="5"></textarea>
+    </mat-form-field>
+
+    <div class="button-container">
+      <button mat-raised-button (click)="save()">Salva</button>
+    </div>
+  </mat-card>
+</div>

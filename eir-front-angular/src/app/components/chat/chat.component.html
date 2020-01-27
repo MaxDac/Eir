@@ -2,5 +2,8 @@
   <app-chat-rows [rows]="currentValue"></app-chat-rows>
 </div>
 <div class="chat-footer">
-  <app-chat-input (sendingPhrase)="onSendPhrase($event)"></app-chat-input>
+  <app-chat-input
+    [roomId]="roomId"
+    (sendingPhrase)="onSendPhrase($event)"
+    (sendingDices)="onSendDices($event)"></app-chat-input>
 </div>

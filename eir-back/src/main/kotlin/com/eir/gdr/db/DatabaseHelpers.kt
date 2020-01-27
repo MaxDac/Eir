@@ -4,6 +4,7 @@ import io.vertx.core.AsyncResult
 import io.vertx.core.Future
 import io.vertx.core.Handler
 import io.vertx.core.Promise
+import io.vertx.core.json.JsonObject
 import io.vertx.ext.jdbc.JDBCClient
 import io.vertx.ext.sql.ResultSet
 import io.vertx.ext.sql.SQLConnection
@@ -50,3 +51,15 @@ fun JDBCClient.dmlAsync(sql: String): Future<Unit> =
     this.getConnectionAsync()
         .flatMap { c -> c.dmlAsync(sql).map { c } }
         .map { c -> c.close() }
+
+fun JsonObject.tryGetString(key: String): String? =
+    if (this.fieldNames().contains(key))
+        this.getString(key)
+    else
+        null
+
+fun JsonObject.tryGetInt(key: String): Int? =
+    if (this.fieldNames().contains(key))
+        this.getInteger(key)
+    else
+        null

@@ -3,9 +3,10 @@ import {Router} from '@angular/router';
 import {HelpService} from '../../../services/help.service';
 import {Race} from '../../../services/dtos/race';
 import {CharacterType} from '../../../services/dtos/character-type';
-import {CHARACTER_COOKIE_KEY, checkCharacterState, setCharacterState} from '../sheet-creation-helpers';
-import {CookieService} from 'ngx-cookie-service';
+import {checkCharacterState, getCompleteRace, setCharacterState} from '../sheet-creation-helpers';
 import {Character} from '../../../services/dtos/character';
+import {isNull} from '../../../helpers';
+import {StorageService} from '../../../services/storage-service';
 
 @Component({
   selector: 'app-sheet-creation',
@@ -17,18 +18,30 @@ export class SheetCreationComponent implements OnInit {
   races: Race[];
   characteristicTypes: CharacterType[];
 
-  selectedRace: Race;
+  selectedFatherRace: Race;
+  selectedMotherRace: Race;
+  hasModifiers: boolean;
   selectedType: CharacterType;
   name: string;
+
+  get showModifiersSelector(): boolean {
+    return !isNull(this.selectedFatherRace) &&
+      !isNull(this.selectedMotherRace) &&
+      this.selectedFatherRace.id !== this.selectedMotherRace.id;
+  }
+
+  get completeRace(): string {
+    return getCompleteRace(this.selectedFatherRace, this.selectedMotherRace, this.hasModifiers);
+  }
 
   constructor(
     private client: HelpService,
     private router: Router,
-    private cookieService: CookieService
+    private storageService: StorageService
   ) { }
 
   ngOnInit() {
-    checkCharacterState(this.cookieService, this.router, 0);
+    checkCharacterState(this.storageService, this.router, 0);
 
     this.client.getRaces()
       .subscribe(rcs => this.races = rcs);
@@ -42,14 +55,16 @@ export class SheetCreationComponent implements OnInit {
       id: null,
       name: this.name,
       type: this.selectedType,
-      race: this.selectedRace,
+      fatherRace: this.selectedFatherRace,
+      motherRace: this.selectedMotherRace,
+      hasModifiers: this.hasModifiers,
       martialAttributes: null,
       mentalAttributes: null,
       martialAbilities: null,
       mentalAbilities: null,
       perks: null
     };
-    setCharacterState(this.cookieService, character);
+    setCharacterState(this.storageService, character);
     this.router.navigate(['sheet/creation/attributes'], {
       state: character
     });

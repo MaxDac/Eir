@@ -8,6 +8,9 @@ import {tryGetState} from '../../../base/route-utils';
 import {Character} from '../../../services/dtos/character';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CookieService} from 'ngx-cookie-service';
+import {isNull} from '../../../helpers';
+import {Characteristic} from '../../../services/dtos/characteristic';
+import {StorageService} from '../../../services/storage-service';
 
 interface VisualEffect {
   name: string;
@@ -36,6 +39,7 @@ interface VisualPerk {
 })
 export class SheetCreationPerksComponent implements OnInit {
   private character: Character;
+  private attributesAndAbilities: Characteristic[];
 
   get dataSource() { return this.perks; }
 
@@ -49,11 +53,16 @@ export class SheetCreationPerksComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private client: HelpService,
-    private cookieService: CookieService
+    private storageService: StorageService
   ) {}
 
   ngOnInit() {
-    this.character = checkCharacterState(this.cookieService, this.router, 3);
+    this.character = checkCharacterState(this.storageService, this.router, 3);
+    this.attributesAndAbilities =
+      this.character.martialAttributes
+        .concat(this.character.mentalAttributes)
+        .concat(this.character.martialAbilities)
+        .concat(this.character.mentalAbilities);
 
     this.client.getPerks()
       .subscribe(ps => this.perks = ps
@@ -66,13 +75,23 @@ export class SheetCreationPerksComponent implements OnInit {
             effects: p.affectedCharacteristic !== null && p.affectedCharacteristic !== undefined ?
               p.affectedCharacteristic.map(e => {
                 return {
+                  id: e.characteristic.id,
                   name: e.characteristic.name,
                   value: e.value
                 };
               }) :
               null
           };
-        }));
+        })
+        .filter(p => {
+          return isNull(p.effects) ||
+            p.effects.filter(e => {
+              const attribute = this.attributesAndAbilities.filter(x => x.id === e.id);
+              const attributeValue = isNull(attribute) || attribute.length === 0 ? 0 : attribute[0].value;
+              return attributeValue + e.value < 0;
+            }).length === 0;
+        })
+      );
   }
 
   /** Whether the number of selected elements matches the total number of rows. */
@@ -110,6 +129,7 @@ export class SheetCreationPerksComponent implements OnInit {
   }
 
   proceed() {
+    console.error(`selected: ${JSON.stringify(this.selection.selected)}`);
     this.character.perks = this.selection.selected.map(s => {
         return {
           id: s.id,
@@ -121,7 +141,8 @@ export class SheetCreationPerksComponent implements OnInit {
       }
     );
 
-    this.cookieService.set('app-character', JSON.stringify(this.character));
+    console.error(`saving: ${JSON.stringify(this.character)}`);
+    setCharacterState(this.storageService, this.character);
 
     this.router.navigate(['sheet/creation/end'], {
       state: this.character
@@ -131,7 +152,7 @@ export class SheetCreationPerksComponent implements OnInit {
   goBack() {
     this.character.martialAbilities = null;
     this.character.mentalAbilities = null
-    setCharacterState(this.cookieService, this.character);
+    setCharacterState(this.storageService, this.character);
     this.router.navigate(['sheet/creation/abilities'], {
       state: this.character
     });

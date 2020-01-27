@@ -1,11 +1,9 @@
 package com.eir.gdr.tests
 
-import com.eir.gdr.db.Database
 import com.eir.gdr.entities.login.AuthenticationRequest
 import com.eir.gdr.logic.AuthenticationLogic
 import com.eir.gdr.tests.base.TestHelpers
-import com.eir.gdr.tests.base.awaitResult
-import io.vertx.core.Vertx
+import com.eir.gdr.awaitResult
 import org.junit.Test
 import kotlin.test.assertNotNull
 

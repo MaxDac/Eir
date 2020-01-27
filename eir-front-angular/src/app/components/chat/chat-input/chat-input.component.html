@@ -9,6 +9,13 @@
     <mat-hint align="end">{{phraseLength}}</mat-hint>
   </mat-form-field>
   <div>
-    <button mat-raised-button (click)="send($event)" style="width: 100%">Invia!</button>
+    <mat-grid-list cols="2" rowHeight="30px">
+      <mat-grid-tile>
+        <button mat-raised-button (click)="send($event)" style="width: 100%">Invia!</button>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <button mat-raised-button (click)="selectDices()" style="width: 100%">Tira dadi</button>
+      </mat-grid-tile>
+    </mat-grid-list>
   </div>
 </form>

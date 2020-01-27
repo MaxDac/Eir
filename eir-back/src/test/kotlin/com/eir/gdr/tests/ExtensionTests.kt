@@ -1,15 +1,11 @@
 package com.eir.gdr.tests
 
 import com.eir.gdr.bind
-import com.eir.gdr.tests.base.async
-import com.eir.gdr.tests.base.awaitResult
+import com.eir.gdr.async
+import com.eir.gdr.awaitResult
 import com.eir.gdr.toMD5
 import io.vertx.core.Future
-import io.vertx.core.Handler
-import io.vertx.core.Promise
-import io.vertx.core.Vertx
 import org.junit.Test
-import java.io.InvalidObjectException
 import java.util.*
 import java.util.concurrent.Executors
 import kotlin.test.assertEquals

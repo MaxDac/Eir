@@ -1,5 +1,7 @@
 package com.eir.gdr.logic
 
+import com.eir.gdr.ClientFuture
+import com.eir.gdr.bind
 import com.eir.gdr.db.Queries
 import com.eir.gdr.db.queryAsync
 import com.eir.gdr.entities.Effect
@@ -32,6 +34,18 @@ object PerksLogic {
                 p.map { pp ->
                     pp.copy(affectedCharacteristic = e[pp.id])
                 }
+            }
+    }
+
+    fun getPerksWithEffectsById(perkId: Int): ClientFuture<Perk> = { client ->
+        client.queryAsync("SELECT * FROM Perks WHERE id = $perkId")
+            .map { x -> Perk.getPerks(x).first() }
+            .bind { p ->
+                client.queryAsync(Queries.getPerkEffects(p.id!!))
+                    .map { rs -> Effect.getEffects(rs) }
+                    .map { es ->
+                        p.copy(affectedCharacteristic = es)
+                    }
             }
     }
 

@@ -17,6 +17,7 @@ enum CharacterSelectorComponentState {
 export class CharacterSelectorComponent implements OnInit {
   private chs: Character[];
   private componentState: CharacterSelectorComponentState = CharacterSelectorComponentState.NORMAL;
+  private storedUserId: number;
   selectedCharacter: Character;
 
   get isSessionUserNull(): boolean {
@@ -38,7 +39,16 @@ export class CharacterSelectorComponent implements OnInit {
 
   get userId(): number | null {
     const session = this.authenticationService.retrieveStoredSession();
-    if (isNull(session)) { return null; } else { return session.userId; }
+    if (isNull(session)) {
+      return null;
+    } else {
+      if (this.storedUserId !== session.userId) {
+        this.storedUserId = session.userId;
+        this.getCharacters();
+      }
+
+      return this.storedUserId;
+    }
   }
 
   get characters(): Character[] {
@@ -61,11 +71,29 @@ export class CharacterSelectorComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.getCharacters();
+  }
+
+  private changeSessionCharacterIfNull(cs: Character[]) {
+    const session = this.authenticationService.retrieveStoredSession();
+    if (!isNull(session) && isNull(session.characterId)) {
+      this.selectedCharacter = cs[0];
+      this.changeCharacter();
+    }
+  }
+
+  private getCharacters() {
     const uid = this.userId;
 
     if (!isNull(uid)) {
       this.provider.getCharacterByUserId(uid)
-        .subscribe(cs => this.chs = cs);
+        .subscribe(cs => {
+          this.chs = cs;
+
+          if (!isNull(this.chs) && this.chs.length !== 0) {
+            this.changeSessionCharacterIfNull(this.chs);
+          }
+        });
     }
   }
 
@@ -74,7 +102,7 @@ export class CharacterSelectorComponent implements OnInit {
     this.componentState = CharacterSelectorComponentState.NORMAL;
   }
 
-  changeState() {
+  changeComponentState() {
     if (this.componentState === CharacterSelectorComponentState.NORMAL) {
       this.componentState = CharacterSelectorComponentState.SELECT;
     } else {

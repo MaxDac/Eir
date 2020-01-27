@@ -6,7 +6,9 @@ import com.eir.gdr.db.queryAsync
 import com.eir.gdr.entities.CharacterType
 import com.eir.gdr.entities.Characteristic
 import com.eir.gdr.entities.Race
+import com.eir.gdr.logic.CharacteristicLogic
 import com.eir.gdr.logic.PerksLogic
+import com.eir.gdr.logic.RaceLogic
 import io.vertx.core.Vertx
 import io.vertx.ext.jdbc.JDBCClient
 import io.vertx.ext.web.Router
@@ -19,8 +21,7 @@ object HelpRoutes : CustomRoutes {
         val router = Router.router(vertx)
 
         router.get("/Abilities").handler { ctx ->
-            client.queryAsync("SELECT * FROM Characteristics WHERE nature = '$abilityNature'")
-                .map { rs -> Characteristic.readCharacteristics(rs) }
+            CharacteristicLogic.getAbilities()(client)
                 .catchToResponse(ctx)
         }
 
@@ -31,8 +32,7 @@ object HelpRoutes : CustomRoutes {
         }
 
         router.get("/Races").handler { ctx ->
-            client.queryAsync(Queries.getRaces)
-                .map { rs -> Race.readRaces(rs) }
+            RaceLogic.getRaces()(client)
                 .catchToResponse(ctx)
         }
 

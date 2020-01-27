@@ -19,8 +19,17 @@ export class CharacterService {
     return this.provider.get(`/Character/${id}`, this.authenticationService.retrieveStoredSession());
   }
 
+  getCharacterByRoomId(roomId: number): Observable<Character[]> {
+    return this.provider.get(`/Character/Room/${roomId}`, this.authenticationService.retrieveStoredSession());
+  }
+
   saveCharacter(c: Character): Observable<any> {
     console.log(`Sending for save: ${JSON.stringify(c)}`);
     return this.provider.post('/Character/Save', c, this.authenticationService.retrieveStoredSession());
+  }
+
+  updateCharacter(c: any): Observable<any> {
+    console.log(`sending for update ${JSON.stringify(c)}`);
+    return this.provider.post('/Character/Update', c);
   }
 }

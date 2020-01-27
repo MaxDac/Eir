@@ -1,0 +1,63 @@
+<mat-list role="list">
+  <mat-list-item role="listitem">
+    <mat-form-field>
+      <mat-label>Caratteristica</mat-label>
+      <mat-select [(value)]="selectedAttribute">
+        <mat-option *ngFor="let a of diceAttributes" [value]="a.id">
+          {{a.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Conoscenza</mat-label>
+      <mat-select [(value)]="selectedAbility">
+        <mat-option *ngFor="let a of diceAbilities" [value]="a.id">
+          {{a.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </mat-list-item>
+  <mat-list-item role="listitem" *ngIf="isCD">
+    <mat-form-field>
+      <mat-label>CD</mat-label>
+      <mat-select [(value)]="cdClass">
+        <mat-option *ngFor="let a of cds" [value]="a">
+          {{a}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </mat-list-item>
+  <mat-list-item role="listitem" *ngIf="!isCD">
+    <mat-form-field>
+      <mat-label>Antagonista</mat-label>
+      <mat-select [(value)]="selectedCharacterId">
+        <mat-option *ngFor="let a of opponents" [value]="a.id">
+          {{a.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Caratteristica</mat-label>
+      <mat-select [(value)]="selectedOpponentAttributeId">
+        <mat-option *ngFor="let a of diceAttributes" [value]="a.id">
+          {{a.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Conoscenza</mat-label>
+      <mat-select [(value)]="selectedOpponentAbilityId">
+        <mat-option *ngFor="let a of diceAbilities" [value]="a.id">
+          {{a.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </mat-list-item>
+  <mat-list-item role="listitem">
+    <button mat-raised-button (click)="throwDice($event)" class="bottom-button">Tira!</button>
+    <button mat-raised-button (click)="changeView($event)" class="bottom-button" disabled>
+      {{changeViewButtonLabel}}
+    </button>
+    <button mat-raised-button (click)="close($event)" class="bottom-button">Chiudi</button>
+  </mat-list-item>
+</mat-list>

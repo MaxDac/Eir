@@ -2,6 +2,7 @@ import {Characteristic} from './characteristic';
 import {Perk} from './perk';
 import {CharacterType} from './character-type';
 import {Race} from './race';
+import {isNull} from '../../helpers';
 
 function prepareCharacteristicForSave(characteristic: Characteristic): any {
   return {
@@ -34,10 +35,15 @@ export function prepareForSave(character: Character): any {
       id: character.type.id,
       name: character.type.name
     },
-    race: {
-      id: character.race.id,
-      name: character.race.name
+    fatherRace: {
+      id: character.fatherRace.id,
+      name: character.fatherRace.name
     },
+    motherRace: {
+      id: character.motherRace.id,
+      name: character.motherRace.name
+    },
+    hasModifiers: character.hasModifiers,
     martialAttributes: character.martialAttributes.map(prepareCharacteristicForSave),
     mentalAttributes: character.mentalAttributes.map(prepareCharacteristicForSave),
     martialAbilities: character.martialAbilities.map(prepareCharacteristicForSave),
@@ -49,11 +55,21 @@ export function prepareForSave(character: Character): any {
 export interface Character {
   id: number | null;
   name: string | null;
+  fullName?: string | null;
   type: CharacterType;
-  race: Race;
+  fatherRace: Race;
+  motherRace: Race;
+  hasModifiers: boolean;
+  photoUrl?: string;
+  description?: string;
+  background?: string;
   martialAttributes: Characteristic[] | null;
   mentalAttributes: Characteristic[] | null;
   martialAbilities: Characteristic[] | null;
   mentalAbilities: Characteristic[] | null;
   perks: Perk[] | null;
+}
+
+export function getCharacterVisualName(c: Character) {
+  return isNull(c.fullName) ? c.name : c.fullName;
 }

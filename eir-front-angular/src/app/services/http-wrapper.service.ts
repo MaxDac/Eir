@@ -6,6 +6,7 @@ import {Injectable} from '@angular/core';
 import {SessionTokens} from './dtos/session-tokens';
 import {isNull} from '../helpers';
 import {environment} from '../../environments/environment';
+import {AuthenticationService} from './authentication.service';
 
 interface AppHttpOptions {
   headers?: HttpHeaders;
@@ -20,10 +21,9 @@ interface AppHttpOptions {
 
 @Injectable({ providedIn: 'root' })
 export class HttpWrapperService {
-
   constructor(public http: HttpClient) {}
 
-  private baseUrl = `${this.hostFromConfiguration()}${environment.baseUrl}`;
+  baseUrl = `${this.hostFromConfiguration()}${environment.baseUrl}`;
 
   private readonly httpOptions: AppHttpOptions = {
     headers: new HttpHeaders({

@@ -18,6 +18,7 @@ import {ForumSectionComponent} from './components/forum/forum-section/forum-sect
 import {ForumTopicComponent} from './components/forum/forum-topic/forum-topic.component';
 import {ForumEditTopicComponent} from './components/forum/forum-edit-topic/forum-edit-topic.component';
 import {ForumEditPostComponent} from './components/forum/forum-edit-post/forum-edit-post.component';
+import {SheetUpdateComponent} from './components/sheet/sheet-update/sheet-update.component';
 
 export const appRoutes: Routes = [
   { path: '', component: HomeComponent, canActivate: [CanActivateViaAuthGuard] },
@@ -32,6 +33,7 @@ export const appRoutes: Routes = [
   { path: 'sheet/creation/abilities', component: SheetCreationAbilitiesComponent, canActivate: [CanActivateViaAuthGuard] },
   { path: 'sheet/creation/perks', component: SheetCreationPerksComponent, canActivate: [CanActivateViaAuthGuard] },
   { path: 'sheet/creation/end', component: SheetCreationEndComponent, canActivate: [CanActivateViaAuthGuard] },
+  { path: 'sheet/update/:id', component: SheetUpdateComponent, canActivate: [CanActivateViaAuthGuard] },
   { path: 'sheet/:id', component: SheetComponent, canActivate: [CanActivateViaAuthGuard] },
   { path: 'rooms', component: ChatRoomsComponent, canActivate: [CanActivateViaAuthGuard] },
   { path: 'chat/:id', component: ChatComponent, canActivate: [CanActivateViaAuthGuard] },

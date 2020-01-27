@@ -1,5 +1,7 @@
 package com.eir.gdr.db
 
+import com.eir.gdr.entities.character.UserCharacter
+
 object Queries {
     val getRaces = "select r.id\n" +
             "      ,r.name\n" +
@@ -16,6 +18,8 @@ object Queries {
             " where r.id_attribute_plus          = c1.id\n" +
             "   and r.id_attribute_minus         = c2.id"
 
+    fun getRaceById(raceId: Int) = "${getRaces} \n   and r.id = $raceId"
+
     val getPerksEffects = "select Effects.id\n" +
             "      ,Effects.value\n" +
             "      ,Perks.id                     perk_id\n" +
@@ -28,19 +32,30 @@ object Queries {
             " where Effects.perk_id              = Perks.id\n" +
             "   and Effects.characteristic_id    = Characteristics.id"
 
+    fun getPerkEffects(perkId: Int) =
+        "${getPerksEffects}\n   and Perks.id = $perkId"
+
     val getCharacterQueryWithoutFilters =
         "select Character.id                         id\n" +
                 "      ,Character.name                       name\n" +
+                "      ,Character.full_name                  full_name\n" +
+                "      ,Character.photo_url                  photo_url\n" +
                 "      ,Character.description                description\n" +
+                "      ,Character.background                 background\n" +
                 "      ,CharacterTypes.id                    type_id\n" +
                 "      ,CharacterTypes.name                  type_name\n" +
-                "      ,Races.id                             race_id\n" +
-                "      ,Races.name                           race_name\n" +
+                "      ,Races.id                             father_race_id\n" +
+                "      ,Races.name                           father_race_name\n" +
+                "      ,MotherRaces.id                       mother_race_id\n" +
+                "      ,MotherRaces.name                     mother_race_name\n" +
+                "      ,Character.has_modifiers              has_modifiers\n" +
                 "  from Character\n" +
                 "      ,CharacterTypes\n" +
                 "      ,Races\n" +
+                "      ,Races as MotherRaces\n" +
                 " where Character.type                       = CharacterTypes.id\n" +
-                "   and Character.race                       = Races.id\n";
+                "   and Character.father_race_id             = Races.id\n" +
+                "   and Character.mother_race_id             = MotherRaces.id\n";
 
     fun getCharacterByName(name: String) =
         "$getCharacterQueryWithoutFilters   and Character.name                       = '$name'"
@@ -50,6 +65,9 @@ object Queries {
 
     fun getCharacterByUserId(userId: Int) =
         "$getCharacterQueryWithoutFilters   and Character.user_id                    = $userId"
+
+    fun getCharacterByRoomId(roomId: Int) =
+        getCharacterQueryWithoutFilters
 
     fun getCharacterCharacteristics(charId: Int, nature: String) =
         "select ch.id\n" +
@@ -70,8 +88,11 @@ object Queries {
     fun getCharacterAttributes(charId: Int) =
         getCharacterCharacteristics(charId, NATURE_ATTRIBUTE)
 
-    fun getCharacterAbilities(charId: Int) =
-        getCharacterCharacteristics(charId, NATURE_ABILITY)
+    fun getCharacterAbilities(charId: Int): String {
+        val query = getCharacterCharacteristics(charId, NATURE_ABILITY)
+        println(query)
+        return query
+    }
 
     fun getPerksByCharacter(charId: Int) =
         "select p.id                                 id\n" +
@@ -153,4 +174,12 @@ object Queries {
                 "      ,Users                        usr\n" +
                 " where pst.id                       = $id\n" +
                 "   and pst.user_id                  = usr.id\n"
+
+    fun updateCharacterInfos(character: UserCharacter) =
+        "update Character\n" +
+                "   set full_name                        = '${character.fullName}'\n" +
+                "      ,photo_url                        = '${character.photoUrl}'\n" +
+                "      ,description                      = '${character.description}'\n" +
+                "      ,background                       = '${character.background}'\n" +
+                " where id                               = ${character.id}\n"
 }

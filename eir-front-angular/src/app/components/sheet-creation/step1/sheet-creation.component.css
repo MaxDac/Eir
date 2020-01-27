@@ -11,4 +11,9 @@
   margin-top: 25px;
   width: 100%;
   text-align: center;
+  border: 1px white solid;
+}
+
+.form-control {
+  width: 200px;
 }

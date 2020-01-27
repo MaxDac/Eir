@@ -1,68 +1,142 @@
-<table>
-  <tr>
-    <td>
-      <table>
-        <tr>
-          <td width="200px">
-
-          </td>
-          <td>
-            Name: {{character.name}}
-          </td>
-        </tr>
-      </table>
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <table>
-        <tr>
-          <td>
-            <table>
-              <tr *ngFor="let c of character.martialAttributes">
-                <td>
-                  <app-sheet-attribute-selector [characteristic]="c"></app-sheet-attribute-selector>
-                </td>
-              </tr>
-            </table>
-          </td>
-          <td>
-            <table>
-              <tr *ngFor="let c of character.mentalAttributes">
-                <td>
-                  <app-sheet-attribute-selector [characteristic]="c"></app-sheet-attribute-selector>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-      </table>
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <table>
-        <tr>
-          <td>
-            <table>
-              <tr *ngFor="let c of character.martialAbilities">
-                <td>
-                  <app-sheet-attribute-selector [characteristic]="c"></app-sheet-attribute-selector>
-                </td>
-              </tr>
-            </table>
-          </td>
-          <td>
-            <table>
-              <tr *ngFor="let c of character.mentalAbilities">
-                <td>
-                  <app-sheet-attribute-selector [characteristic]="c"></app-sheet-attribute-selector>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-      </table>
-    </td>
-  </tr>
-</table>
+<div>
+  <table class="sheet-container">
+    <tr>
+      <td>
+        <table>
+          <tr>
+            <td valign="middle" class="avatar-background">
+              <img
+                [src]="character.photoUrl"
+                class="avatar" />
+            </td>
+            <td>
+              <table>
+                <tr>
+                  <td>
+                    Nome:
+                  </td>
+                  <td>
+                    {{fullName}}
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    Tipo:
+                  </td>
+                  <td>
+                    {{character.type.name}}
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    Razza:
+                  </td>
+                  <td>
+                    {{completeRace}}
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td class="sheet-title">
+        <button mat-raised-button [routerLink]="['/sheet/update', this.character.id]">Modifica</button>
+      </td>
+    </tr>
+    <tr>
+      <td class="sheet-title">
+        <h3>Descrizione</h3>
+      </td>
+    </tr>
+    <tr>
+      <td class="sheet-title">
+        {{character.description}}
+      </td>
+    </tr>
+    <tr>
+      <td class="sheet-title">
+        <h3>Background</h3>
+      </td>
+    </tr>
+    <tr>
+      <td class="sheet-title">
+        {{character.background}}
+      </td>
+    </tr>
+    <tr>
+      <td class="sheet-title">
+        <h3>Caratteristiche</h3>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <table>
+          <tr>
+            <td>
+              <table>
+                <tr *ngFor="let c of character.martialAttributes">
+                  <td>
+                    <app-sheet-attribute-selector [characteristic]="c"></app-sheet-attribute-selector>
+                  </td>
+                </tr>
+              </table>
+            </td>
+            <td>
+              <table>
+                <tr *ngFor="let c of character.mentalAttributes">
+                  <td>
+                    <app-sheet-attribute-selector [characteristic]="c"></app-sheet-attribute-selector>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td class="sheet-title">
+        <h3>Conoscenze</h3>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <table>
+          <tr>
+            <td valign="top">
+              <table>
+                <tr *ngFor="let c of character.martialAbilities">
+                  <td>
+                    <app-sheet-attribute-selector [characteristic]="c"></app-sheet-attribute-selector>
+                  </td>
+                </tr>
+              </table>
+            </td>
+            <td valign="top">
+              <table>
+                <tr *ngFor="let c of character.mentalAbilities">
+                  <td>
+                    <app-sheet-attribute-selector [characteristic]="c"></app-sheet-attribute-selector>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td class="sheet-title">
+        <h3>Peculiarit&agrave;</h3>
+      </td>
+    </tr>
+    <tr *ngFor="let p of character.perks">
+      <td>
+        {{p.name}}
+      </td>
+    </tr>
+  </table>
+</div>

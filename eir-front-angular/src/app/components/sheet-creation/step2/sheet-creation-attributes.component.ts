@@ -12,6 +12,7 @@ import {
   setCharacterState
 } from '../sheet-creation-helpers';
 import {CookieService} from 'ngx-cookie-service';
+import {StorageService} from '../../../services/storage-service';
 
 @Component({
   selector: 'app-sheet-creation-attributes',
@@ -44,11 +45,11 @@ export class SheetCreationAttributesComponent implements OnInit {
     private client: HelpService,
     private router: Router,
     private route: ActivatedRoute,
-    private cookieService: CookieService
+    private storageService: StorageService
   ) { }
 
   ngOnInit(): void {
-    this.character = checkCharacterState(this.cookieService, this.router, 1);
+    this.character = checkCharacterState(this.storageService, this.router, 1);
 
     this.client.getCharacteristics()
       .subscribe(x => {
@@ -66,7 +67,7 @@ export class SheetCreationAttributesComponent implements OnInit {
         .filter(x => x.value !== 0 && x.type === MentalAttribute)
         .map(mapCharacteristicForSave);
 
-      setCharacterState(this.cookieService, this.character);
+      setCharacterState(this.storageService, this.character);
       this.router.navigate(['sheet/creation/abilities'], {
         state: this.character
       });
@@ -78,7 +79,7 @@ export class SheetCreationAttributesComponent implements OnInit {
   }
 
   goBack() {
-    resetCache(this.cookieService);
+    resetCache(this.storageService);
     this.router.navigate(['sheet/creation']);
   }
 }
