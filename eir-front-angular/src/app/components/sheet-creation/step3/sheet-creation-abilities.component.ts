@@ -54,11 +54,11 @@ export class SheetCreationAbilitiesComponent implements OnInit {
   proceed() {
     if (this.stepCompleted) {
       this.character.martialAbilities = this.characteristics
-        .filter(x => x.value !== 0 && x.type === MartialAttribute)
+        .filter(x => x.type === MartialAttribute)
         .map(mapCharacteristicForSave);
 
       this.character.mentalAbilities = this.characteristics
-        .filter(x => x.value !== 0 && x.type === MentalAttribute)
+        .filter(x => x.type === MentalAttribute)
         .map(mapCharacteristicForSave);
 
       setCharacterState(this.storageService, this.character);

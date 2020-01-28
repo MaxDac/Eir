@@ -6,7 +6,6 @@ import com.eir.gdr.db.dmlAsync
 import com.eir.gdr.db.queryAsync
 import com.eir.gdr.entities.Characteristic
 import com.eir.gdr.entities.Effect
-import com.eir.gdr.entities.Perk
 import com.eir.gdr.entities.Race
 import com.eir.gdr.entities.character.UserCharacter
 import com.eir.gdr.entities.character.UserCharacteristic
@@ -15,7 +14,6 @@ import com.eir.gdr.logic.Exceptions.notFound
 import io.vertx.core.Future
 import io.vertx.core.Promise
 import io.vertx.core.logging.LoggerFactory
-import java.lang.Exception
 import kotlin.math.abs
 
 object CharacterLogic {
