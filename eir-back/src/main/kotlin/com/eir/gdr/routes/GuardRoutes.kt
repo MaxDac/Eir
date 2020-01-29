@@ -1,5 +1,6 @@
 package com.eir.gdr.routes
 
+import com.eir.gdr.ApiException
 import com.eir.gdr.db.mapToResponse
 import com.eir.gdr.getUserFromSession
 import io.vertx.core.Future
@@ -23,8 +24,10 @@ object GuardRoutes : CustomRoutes {
         router.get().handler { ctx ->
             checkSessionContext(ctx, client)
                 .setHandler { res ->
-                    if (res.succeeded() && res.result()) ctx.next()
-                    else ctx.mapToResponse("Session not found")
+                    if (res.succeeded() && res.result())
+                        ctx.next()
+                    else
+                        ctx.mapToResponse(ApiException.sessionNotFound)
                 }
         }
 

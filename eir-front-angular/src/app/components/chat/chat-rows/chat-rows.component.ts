@@ -11,7 +11,6 @@ export class ChatRowsComponent implements OnInit {
 
   @Input()
   set rows(value: ChatEntry[]) {
-    console.log(`Setting: ${JSON.stringify(value)}`);
     this.chatRows = value;
   }
 

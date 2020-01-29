@@ -3,6 +3,7 @@ import {Characteristic, MartialAttribute, MentalAttribute} from '../../../servic
 import {HelpService} from '../../../services/help.service';
 import {ActivatedRoute} from '@angular/router';
 import 'rxjs-compat/add/operator/mergeMap';
+import {PageErrorHandlerService} from '../../../services/page-error-handler.service';
 
 @Component({
   selector: 'app-characteristics',
@@ -24,7 +25,8 @@ export class CharacteristicsComponent implements OnInit {
 
   constructor(
     private client: HelpService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private errorHandler: PageErrorHandlerService
   ) { }
 
   ngOnInit() {
@@ -36,11 +38,11 @@ export class CharacteristicsComponent implements OnInit {
             return this.client.getAbilities();
           }
         })
-      .subscribe(x => {
+      .subscribe(y => this.errorHandler.handleError(y, x  => {
         this.martials = this.filterCharacteristics(x, MartialAttribute);
         this.mentals = this.filterCharacteristics(x, MentalAttribute);
         this.loaded = true;
-      });
+      }));
   }
 
 }

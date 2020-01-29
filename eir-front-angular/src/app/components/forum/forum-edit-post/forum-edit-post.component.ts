@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ForumService} from '../../../services/forum.service';
 import {AuthenticationService} from '../../../services/authentication.service';
+import {PageErrorHandlerService} from '../../../services/page-error-handler.service';
 
 enum PostOperation {
   CREATE,
@@ -23,7 +24,8 @@ export class ForumEditPostComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private route: ActivatedRoute,
     private provider: ForumService,
-    private router: Router
+    private router: Router,
+    private errorHandler: PageErrorHandlerService
   ) { }
 
   ngOnInit() {
@@ -35,18 +37,16 @@ export class ForumEditPostComponent implements OnInit {
         } else {
           this.operation = PostOperation.MODIFY;
           this.id = Number(x.get('id'));
-          console.log(`The id is : ${this.id}`);
 
           this.provider.getPost(this.id)
-            .subscribe(t => {
-              console.log(`The topic is: ${JSON.stringify(t)}`);
+            .subscribe(y => this.errorHandler.handleError(y, t => {
               this.post = {
                 id: t.id,
                 content: t.content,
                 userId: t.user.id,
                 topicId: t.topicId
               };
-            });
+            }));
         }
       });
   }

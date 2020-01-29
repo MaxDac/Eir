@@ -29,33 +29,33 @@ object CharacterSaveLogic {
         "insert into CharacterRelPerk(character_id, perk_id) " +
                 "values (${c.id}, ${p.id});\n"
 
-    fun insertUserCharacter(c: UserCharacter, userId: Int): ClientFuture<UserCharacter?> = { client ->
+    fun insertUserCharacter(c: UserCharacter, userId: Int): ClientFuture<UserCharacter> = { client ->
         val dml = userInsertDml(c, userId)
         client.dmlAsync(dml)
             .bind { CharacterLogic.getByName(c.name!!)(client) }
-            .map { cc -> c.copy(id = c.id) }
+            .map { cc -> c.copy(id = cc!!.id) }
     }
 
     fun insertCharacteristics(c: UserCharacter): ClientFuture<UserCharacter> = { client ->
         val promise = Promise.promise<UserCharacter>()
 
-        fun insertCharacteristicsInternal(connection: SQLConnection, cs: List<UserCharacteristic>): Future<Unit>? {
-            val innerPromise = Promise.promise<Unit>()
-
+        fun insertCharacteristicsInternal(
+            connection: SQLConnection,
+            cs: List<UserCharacteristic>,
+            p: Promise<Unit>) {
             if (cs.isEmpty()) {
-                innerPromise.complete()
+                p.complete()
+                return
             }
             else {
                 cs.head()?.let { characteristic ->
                     val dml = insertCharacteristicsDml(c, characteristic)
                     connection.execute(dml) { res ->
-                        if (res.succeeded()) insertCharacteristicsInternal(connection, cs.tail())
-                        else promise.fail(res.cause())
+                        if (res.succeeded()) insertCharacteristicsInternal(connection, cs.tail(), p)
+                        else p.fail(res.cause())
                     }
                 }
             }
-
-            return innerPromise.future()
         }
 
         val userCharacteristics =
@@ -67,10 +67,15 @@ object CharacterSaveLogic {
         client.getConnection { conn ->
             if (conn.failed()) promise.fail(conn.cause())
             else {
-                insertCharacteristicsInternal(conn.result(), userCharacteristics)
-                conn.result().close { res ->
-                    if (res.succeeded()) promise.complete(c)
-                    else promise.fail(res.cause())
+                val p = Promise.promise<Unit>()
+                insertCharacteristicsInternal(conn.result(), userCharacteristics, p)
+
+                p.future().setHandler {res ->
+                    conn.result().close { ress ->
+                        if (res.succeeded() && ress.succeeded()) promise.complete(c)
+                        else if (res.failed()) promise.fail(res.cause())
+                        else promise.fail(ress.cause())
+                    }
                 }
             }
         }
@@ -81,17 +86,17 @@ object CharacterSaveLogic {
     fun insertPerks(c: UserCharacter): ClientFuture<UserCharacter> = { client ->
         val promise = Promise.promise<UserCharacter>()
 
-        fun insertPerksInternal(connection: SQLConnection, cs: List<UserPerk>) {
+        fun insertPerksInternal(connection: SQLConnection, cs: List<UserPerk>, p: Promise<Unit>) {
             if (cs.isEmpty()) {
-                promise.complete()
+                p.complete()
                 return
             }
 
             cs.head()?.let { perk ->
                 val dml = insertPerksDml(c, perk)
                 connection.execute(dml) { res ->
-                    if (res.succeeded()) insertPerksInternal(connection, cs.tail())
-                    else promise.fail(res.cause())
+                    if (res.succeeded()) insertPerksInternal(connection, cs.tail(), p)
+                    else p.fail(res.cause())
                 }
             }
         }
@@ -99,10 +104,15 @@ object CharacterSaveLogic {
         client.getConnection { conn ->
             if (conn.failed()) promise.fail(conn.cause())
             else {
-                insertPerksInternal(conn.result(), c.perks!!)
-                conn.result().close { res ->
-                    if (res.succeeded()) promise.complete()
-                    else promise.fail(res.cause())
+                val p = Promise.promise<Unit>()
+                insertPerksInternal(conn.result(), c.perks!!, p)
+
+                p.future().setHandler { res ->
+                    conn.result().close { ress ->
+                        if (res.succeeded() && ress.succeeded()) promise.complete(c)
+                        else if (res.failed()) promise.fail(res.cause())
+                        else promise.fail(ress.cause())
+                    }
                 }
             }
         }
@@ -110,7 +120,7 @@ object CharacterSaveLogic {
         promise.future()
     }
 
-    fun applyRaceModifiers(c: UserCharacter): ClientFuture<Unit> = { client ->
+    fun applyRaceModifiers(c: UserCharacter): ClientFuture<UserCharacter> = { client ->
         fun applyRaceTraits(c: UserCharacter, r: Race): ClientFuture<Unit> = { cl ->
             val firstOperation = cl.dmlAsync("UPDATE CharacterRelCharacteristic SET value = value - 1 " +
                     "WHERE character_id = ${c.id} AND characteristic_id = ${r.minAttribute.id}")
@@ -125,14 +135,15 @@ object CharacterSaveLogic {
                 .bind { race -> applyRaceTraits(c, race)(client) }
 
             if (c.fatherRace?.id != c.motherRace?.id) {
-                future.bind {
-                    RaceLogic.getRaceById(c.motherRace!!.id!!)(client)
-                }.bind { motherRace -> applyRaceTraits(c, motherRace)(client) }
-            } else {
                 future
+                    .bind { RaceLogic.getRaceById(c.motherRace!!.id!!)(client) }
+                    .bind { motherRace -> applyRaceTraits(c, motherRace)(client) }
+                    .map { c }
+            } else {
+                future.map { c }
             }
         } else {
-            Future.succeededFuture()
+            Future.succeededFuture(c)
         }
     }
 
@@ -159,8 +170,10 @@ object CharacterSaveLogic {
             .map { lsss -> lsss.flatten().reduce { _, _ -> run {} } }(client)
     }
 
-    fun save(character: UserCharacter, userId: Int): ClientFuture<Unit> {
+    fun save(character: UserCharacter, userId: Int): ClientFuture<Unit> =
         insertUserCharacter(character, userId)
             .bind { c -> insertCharacteristics(c) }
-    }
+            .bind { c -> insertPerks(c) }
+            .bind { c -> applyRaceModifiers(c) }
+            .bind { c -> applyPerksModifiers(c) }
 }

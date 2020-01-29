@@ -5,10 +5,11 @@ import {SessionTokens} from './dtos/session-tokens';
 import {Observable} from 'rxjs';
 import {CookieService} from 'ngx-cookie-service';
 import {isNull} from '../helpers';
+import {ApiException, isError} from './dtos/api-exception';
+import {SESSION_COOKIE_KEY} from '../base/constants';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
-  private readonly SESSION_COOKIE_KEY: string = 'x-session-storage';
 
   constructor(
     private provider: HttpWrapperService,
@@ -16,7 +17,7 @@ export class AuthenticationService {
   ) { }
 
   private storeSession(session: SessionTokens) {
-    this.cookieService.set(this.SESSION_COOKIE_KEY, JSON.stringify(session));
+    this.cookieService.set(SESSION_COOKIE_KEY, JSON.stringify(session));
   }
 
   changeCharacter(characterId: number, characterName?: string) {
@@ -33,21 +34,20 @@ export class AuthenticationService {
 
   retrieveStoredSession(): SessionTokens | null {
     try {
-      const value = this.cookieService.get(this.SESSION_COOKIE_KEY);
+      const value = this.cookieService.get(SESSION_COOKIE_KEY);
       return JSON.parse(value);
     } catch (e) {
       return null;
     }
   }
 
-  deleteStoredSession() {
-    this.cookieService.delete(this.SESSION_COOKIE_KEY);
-  }
-
-  login(request: AuthenticationRequest): Observable<SessionTokens> {
+  login(request: AuthenticationRequest): Observable<SessionTokens | ApiException> {
     return this.provider.post<SessionTokens>('/Login', request)
       .map(x => {
-        this.storeSession(x);
+        if (!isError(x)) {
+          this.storeSession(x as SessionTokens);
+        }
+
         return x;
       });
   }

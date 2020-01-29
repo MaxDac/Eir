@@ -10,7 +10,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {CookieService} from 'ngx-cookie-service';
 import {isNull} from '../../../helpers';
 import {Characteristic} from '../../../services/dtos/characteristic';
-import {StorageService} from '../../../services/storage-service';
+import {StorageService} from '../../../services/storage.service';
+import {PageErrorHandlerService} from '../../../services/page-error-handler.service';
 
 interface VisualEffect {
   name: string;
@@ -53,7 +54,8 @@ export class SheetCreationPerksComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private client: HelpService,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private errorHandler: PageErrorHandlerService
   ) {}
 
   ngOnInit() {
@@ -65,33 +67,34 @@ export class SheetCreationPerksComponent implements OnInit {
         .concat(this.character.mentalAbilities);
 
     this.client.getPerks()
-      .subscribe(ps => this.perks = ps
-        .map(p => {
-          return {
-            id: p.id,
-            name: p.name,
-            description: p.description,
-            negative: p.negative,
-            effects: p.affectedCharacteristic !== null && p.affectedCharacteristic !== undefined ?
-              p.affectedCharacteristic.map(e => {
-                return {
-                  id: e.characteristic.id,
-                  name: e.characteristic.name,
-                  value: e.value
-                };
-              }) :
-              null
-          };
-        })
-        .filter(p => {
-          return isNull(p.effects) ||
-            p.effects.filter(e => {
-              const attribute = this.attributesAndAbilities.filter(x => x.id === e.id);
-              const attributeValue = isNull(attribute) || attribute.length === 0 ? 0 : attribute[0].value;
-              return attributeValue + e.value < 0;
-            }).length === 0;
-        })
-      );
+      .subscribe(x => this.errorHandler.handleError(x, ps =>
+        this.perks = ps
+          .map(p => {
+            return {
+              id: p.id,
+              name: p.name,
+              description: p.description,
+              negative: p.negative,
+              effects: p.affectedCharacteristic !== null && p.affectedCharacteristic !== undefined ?
+                p.affectedCharacteristic.map(e => {
+                  return {
+                    id: e.characteristic.id,
+                    name: e.characteristic.name,
+                    value: e.value
+                  };
+                }) :
+                null
+            };
+          })
+          .filter(p => {
+            return isNull(p.effects) ||
+              p.effects.filter(e => {
+                const attribute = this.attributesAndAbilities.filter(x => x.id === e.id);
+                const attributeValue = isNull(attribute) || attribute.length === 0 ? 0 : attribute[0].value;
+                return attributeValue + e.value < 0;
+              }).length === 0;
+          })
+        ));
   }
 
   /** Whether the number of selected elements matches the total number of rows. */

@@ -36,10 +36,11 @@
     </div>
 
     <div class="centered-control-container" *ngIf="showModifiersSelector">
+
       <mat-checkbox [(ngModel)]="hasModifiers">Vuoi applicare i modificatori di razza?</mat-checkbox>
     </div>
 
-  <div>
+  <div style="margin-bottom: 20px;">
     <span [innerHTML]="name"></span> sar&agrave; un
     <span [innerHTML]="completeRace"></span>&nbsp;
     <span [innerHTML]="selectedType === undefined ? '' : selectedType.name"></span>, confermi questa scelta?

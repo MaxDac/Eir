@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {ForumService} from '../../services/forum.service';
+import {PageErrorHandlerService} from '../../services/page-error-handler.service';
 
 @Component({
   selector: 'app-forum',
@@ -10,12 +11,13 @@ export class ForumComponent implements OnInit {
   sections: ForumSection[];
 
   constructor(
-    private provider: ForumService
+    private provider: ForumService,
+    private errorHandler: PageErrorHandlerService
   ) { }
 
   ngOnInit() {
     this.provider.getSections()
-      .subscribe(s => this.sections = s);
+      .subscribe(x => this.errorHandler.handleError(x, s  => this.sections = s));
   }
 
 }

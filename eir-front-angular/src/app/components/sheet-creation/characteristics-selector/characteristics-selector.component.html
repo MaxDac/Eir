@@ -6,20 +6,54 @@
 </div>
 
 <div>
-  <mat-grid-list cols="2" rowHeight="50px">
-    <mat-grid-tile *ngFor="let c of characteristics">
-      <div style="min-width: 150px;">
-        {{c.name}}
-      </div>
-      <div>
-        <app-characteristic-selection
-          [name]="c.name"
-          [minValue]="minimumValue"
-          [maxValue]="5"
-          (selectedValue)="onSelected($event)"
-          [disablePlus]="c.type === 'Marziale' ? disableMartialPlus : disableMentalPlus">
-        </app-characteristic-selection>
-      </div>
-    </mat-grid-tile>
-  </mat-grid-list>
+  <table class="chars-table-container">
+    <tr>
+      <td>
+        <table class="chars-table-container">
+          <tr *ngFor="let c of martialCharacteristics">
+            <td>
+              <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" class="selector-container">
+                <div fxFlex class="selector-label-container">
+                  {{c.name}}
+                </div>
+                <div fxFlex class="selector-inside-container">
+                  <div class="selector">
+                    <app-characteristic-selection
+                      [name]="c.name"
+                      [minValue]="minimumValue"
+                      [maxValue]="5"
+                      (selectedValue)="onSelected($event)"
+                      [disablePlus]="c.type === 'Marziale' ? disableMartialPlus : disableMentalPlus">
+                    </app-characteristic-selection>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </td>
+      <td>
+        <table class="chars-table-container">
+          <tr *ngFor="let c of mentalCharacteristics">
+            <td>
+              <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" class="selector-container">
+                <div fxFlex class="selector-label-container">
+                  {{c.name}}
+                </div>
+                <div fxFlex class="selector">
+                  <app-characteristic-selection
+                    [name]="c.name"
+                    [minValue]="minimumValue"
+                    [maxValue]="5"
+                    (selectedValue)="onSelected($event)"
+                    [disablePlus]="c.type === 'Marziale' ? disableMartialPlus : disableMentalPlus">
+                  </app-characteristic-selection>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
 </div>

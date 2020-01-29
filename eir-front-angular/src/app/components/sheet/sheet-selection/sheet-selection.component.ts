@@ -3,6 +3,7 @@ import {Character} from '../../../services/dtos/character';
 import {CharacterService} from '../../../services/character.service';
 import {AuthenticationService} from '../../../services/authentication.service';
 import {Router} from '@angular/router';
+import {PageErrorHandlerService} from '../../../services/page-error-handler.service';
 
 @Component({
   selector: 'app-sheet-selection',
@@ -16,19 +17,14 @@ export class SheetSelectionComponent implements OnInit {
   constructor(
     private authenticationService: AuthenticationService,
     private service: CharacterService,
-    private router: Router
+    private router: Router,
+    private errorHandler: PageErrorHandlerService
   ) { }
 
   ngOnInit() {
     const session = this.authenticationService.retrieveStoredSession();
     this.service.getCharacterByUserId(session.userId)
-      .subscribe(cs => {
-        // if (cs.length === 1) {
-        //   this.router.navigate(['sheet', cs[0].id]);
-        // } else {
-          this.characters = cs;
-        // }
-      });
+      .subscribe(x => this.errorHandler.handleError(x, cs => this.characters = cs));
   }
 
   select() {

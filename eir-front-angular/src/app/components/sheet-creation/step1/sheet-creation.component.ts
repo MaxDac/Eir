@@ -6,7 +6,8 @@ import {CharacterType} from '../../../services/dtos/character-type';
 import {checkCharacterState, getCompleteRace, setCharacterState} from '../sheet-creation-helpers';
 import {Character} from '../../../services/dtos/character';
 import {isNull} from '../../../helpers';
-import {StorageService} from '../../../services/storage-service';
+import {StorageService} from '../../../services/storage.service';
+import {PageErrorHandlerService} from '../../../services/page-error-handler.service';
 
 @Component({
   selector: 'app-sheet-creation',
@@ -20,7 +21,7 @@ export class SheetCreationComponent implements OnInit {
 
   selectedFatherRace: Race;
   selectedMotherRace: Race;
-  hasModifiers: boolean;
+  hasModifiers = true;
   selectedType: CharacterType;
   name: string;
 
@@ -37,17 +38,18 @@ export class SheetCreationComponent implements OnInit {
   constructor(
     private client: HelpService,
     private router: Router,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private errorHandler: PageErrorHandlerService
   ) { }
 
   ngOnInit() {
     checkCharacterState(this.storageService, this.router, 0);
 
     this.client.getRaces()
-      .subscribe(rcs => this.races = rcs);
+      .subscribe(x => this.errorHandler.handleError(x, rcs => this.races = rcs));
 
     this.client.getCharacteristicTypes()
-      .subscribe(t => this.characteristicTypes = t);
+      .subscribe(x => this.errorHandler.handleError(x, t => this.characteristicTypes = t));
   }
 
   proceed() {

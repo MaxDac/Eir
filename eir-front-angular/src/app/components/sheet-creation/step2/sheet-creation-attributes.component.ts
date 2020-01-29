@@ -12,7 +12,8 @@ import {
   setCharacterState
 } from '../sheet-creation-helpers';
 import {CookieService} from 'ngx-cookie-service';
-import {StorageService} from '../../../services/storage-service';
+import {StorageService} from '../../../services/storage.service';
+import {PageErrorHandlerService} from '../../../services/page-error-handler.service';
 
 @Component({
   selector: 'app-sheet-creation-attributes',
@@ -45,16 +46,15 @@ export class SheetCreationAttributesComponent implements OnInit {
     private client: HelpService,
     private router: Router,
     private route: ActivatedRoute,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private errorHandler: PageErrorHandlerService
   ) { }
 
   ngOnInit(): void {
     this.character = checkCharacterState(this.storageService, this.router, 1);
 
     this.client.getCharacteristics()
-      .subscribe(x => {
-        this.characteristics = divideCharacteristics(x);
-      });
+      .subscribe(x => this.errorHandler.handleError(x, cs => this.characteristics = cs));
   }
 
   proceed() {

@@ -8,3 +8,28 @@
   min-width: 200px;
   margin: 10px;
 }
+
+.selector-container {
+  width: 100%;
+}
+
+.selector-label-container {
+  height: 40px;
+  min-width: 150px;
+  text-align: center;
+  line-height: 40px;
+}
+
+.selector-inside-container {
+
+}
+
+.selector {
+  width: 200px;
+  margin: 0 auto;
+}
+
+.chars-table-container {
+  width: 100%;
+  text-align: center;
+}

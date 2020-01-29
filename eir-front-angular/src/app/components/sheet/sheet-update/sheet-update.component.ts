@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CharacterService} from '../../../services/character.service';
 import {Character, getCharacterVisualName} from '../../../services/dtos/character';
+import {PageErrorHandlerService} from '../../../services/page-error-handler.service';
 
 @Component({
   selector: 'app-sheet-update',
@@ -23,7 +24,8 @@ export class SheetUpdateComponent implements OnInit {
   constructor(
     private characterService: CharacterService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private errorHandler: PageErrorHandlerService
   ) { }
 
   ngOnInit() {
@@ -32,7 +34,7 @@ export class SheetUpdateComponent implements OnInit {
         this.characterId = Number(p.get('id'));
         return this.characterService.getCharacterById(this.characterId);
       })
-      .subscribe(c => this.ch = c);
+      .subscribe(x => this.errorHandler.handleError(x, c => this.ch = c));
   }
 
   save() {

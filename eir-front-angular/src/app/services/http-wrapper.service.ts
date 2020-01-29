@@ -6,7 +6,8 @@ import {Injectable} from '@angular/core';
 import {SessionTokens} from './dtos/session-tokens';
 import {isNull} from '../helpers';
 import {environment} from '../../environments/environment';
-import {AuthenticationService} from './authentication.service';
+import {ApiException, isError, SESSION_NOT_FOUND_CODE} from './dtos/api-exception';
+import {LogoutService} from './logout-service';
 
 interface AppHttpOptions {
   headers?: HttpHeaders;
@@ -21,7 +22,10 @@ interface AppHttpOptions {
 
 @Injectable({ providedIn: 'root' })
 export class HttpWrapperService {
-  constructor(public http: HttpClient) {}
+  constructor(
+    public http: HttpClient,
+    private logoutService: LogoutService
+  ) {}
 
   baseUrl = `${this.hostFromConfiguration()}${environment.baseUrl}`;
 
@@ -33,12 +37,12 @@ export class HttpWrapperService {
   };
 
   private static errorHandler(error: HttpErrorResponse) {
+    console.error(`Error from the back end!: ${JSON.stringify(error)}`);
     return throwError(error.message);
   }
 
   private hostFromConfiguration() {
     const parts = window.location.href.split(':');
-    console.log(`splitted: ${JSON.stringify(parts)}`);
     return `${parts[0]}:${parts[1]}`;
   }
 
@@ -67,10 +71,23 @@ export class HttpWrapperService {
     return `${this.baseUrl}${isComplete ? '' : '/'}${relativeUrl}`;
   }
 
-  get<T>(url: string, authentication?: SessionTokens | null): Observable<T> {
+  manageRemoteResult<T>(apiResponse: any): T | ApiException {
+    if (isError(apiResponse)) {
+      const error: ApiException = apiResponse as ApiException;
+      if (error.apiErrorCode === SESSION_NOT_FOUND_CODE) {
+        this.logoutService.logout();
+      }
+
+      return null;
+    }
+
+    return apiResponse as T;
+  }
+
+  get<T>(url: string, authentication?: SessionTokens | null): Observable<T | ApiException> {
 
     const completeUrl = this.buildUrl(url);
-    console.log(`calling: ${completeUrl}`);
+    console.log(`calling (GET): ${completeUrl}`);
 
     const observable = isNull(authentication) ?
       this.http.get(completeUrl) :
@@ -78,17 +95,20 @@ export class HttpWrapperService {
 
     return observable
       .pipe(catchError(HttpWrapperService.errorHandler))
-      .map(x => x as T);
+      .map(x => this.manageRemoteResult(x));
   }
 
-  post<T>(url: string, body: any | null, authentication?: SessionTokens | null): Observable<T> {
-    console.log(`Session: ${JSON.stringify(authentication)}`);
+  post<T>(url: string, body: any | null, authentication?: SessionTokens | null): Observable<T | ApiException> {
+    // console.log(`Session: ${JSON.stringify(authentication)}`);
     const options = isNull(authentication) ?
       this.httpOptions :
       this.addAuthentication(this.httpOptions, authentication);
 
-    return this.http.post(this.buildUrl(url), body, options)
+    const completeUrl = this.buildUrl(url);
+    console.log(`calling (POST): ${completeUrl}`);
+
+    return this.http.post(completeUrl, body, options)
       .pipe(catchError(HttpWrapperService.errorHandler))
-      .map(x => x as T);
+      .map(x => this.manageRemoteResult(x));
   }
 }

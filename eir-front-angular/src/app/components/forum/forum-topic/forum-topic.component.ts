@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {ForumService} from '../../../services/forum.service';
+import {PageErrorHandlerService} from '../../../services/page-error-handler.service';
 
 @Component({
   selector: 'app-forum-topic',
@@ -13,23 +14,25 @@ export class ForumTopicComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private provider: ForumService
+    private provider: ForumService,
+    private errorHandler: PageErrorHandlerService
   ) { }
 
   ngOnInit() {
     this.route.paramMap
-      .flatMap(p => {
+      .subscribe(p => {
         this.idTopic = Number(p.get('id'));
-        return this.provider.getPosts(this.idTopic)
-          .map(x => x.sort((x1, x2) => {
-            if (x1.creationDate > x2.creationDate) {
-              return 1;
-            } else {
-              return -1;
-            }
+        this.provider.getPosts(this.idTopic)
+          .subscribe(y => this.errorHandler.handleError(y, x => {
+            this.posts = x.sort((x1, x2) => {
+              if (x1.creationDate > x2.creationDate) {
+                return 1;
+              } else {
+                return -1;
+              }
+            });
           }));
-      })
-      .subscribe(ts => this.posts = ts);
+      });
   }
 
 }

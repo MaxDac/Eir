@@ -2,7 +2,7 @@ import {Characteristic, MartialAttribute, MentalAttribute} from '../../services/
 import {Router} from '@angular/router';
 import {Character} from '../../services/dtos/character';
 import {Race} from '../../services/dtos/race';
-import {StorageService} from '../../services/storage-service';
+import {StorageService} from '../../services/storage.service';
 
 export const CHARACTER_COOKIE_KEY = 'app-character';
 

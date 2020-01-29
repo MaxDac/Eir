@@ -6,10 +6,11 @@ import {
   MatListModule,
   MatMenuModule,
   MatProgressBarModule, MatSelectModule,
-  MatSidenavModule, MatStepperModule, MatTableModule, MatTabsModule,
+  MatSidenavModule, MatSnackBarModule, MatStepperModule, MatTableModule, MatTabsModule,
   MatToolbarModule
 } from '@angular/material';
 import {DragDropModule} from '@angular/cdk/drag-drop';
+import {FlexLayoutModule} from '@angular/flex-layout';
 
 @NgModule({
   imports: [
@@ -32,7 +33,9 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
     MatCheckboxModule,
     MatStepperModule,
     MatCardModule,
-    MatBottomSheetModule
+    MatBottomSheetModule,
+    FlexLayoutModule,
+    MatSnackBarModule
   ],
   exports: [
     MatToolbarModule,
@@ -54,7 +57,9 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
     MatCheckboxModule,
     MatStepperModule,
     MatCardModule,
-    MatBottomSheetModule
+    MatBottomSheetModule,
+    FlexLayoutModule,
+    MatSnackBarModule
   ]
 })
 export class MaterialModule {}

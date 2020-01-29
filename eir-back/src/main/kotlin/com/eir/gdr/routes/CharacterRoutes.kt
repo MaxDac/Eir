@@ -7,12 +7,10 @@ import com.eir.gdr.db.parseBody
 import com.eir.gdr.entities.character.UserCharacter
 import com.eir.gdr.getUserFromSession
 import com.eir.gdr.logic.CharacterLogic
-import com.eir.gdr.logic.CharacteristicLogic
-import com.eir.gdr.logic.addEmptyAbilities
+import com.eir.gdr.logic.CharacterSaveLogic
 import io.vertx.core.Vertx
 import io.vertx.ext.jdbc.JDBCClient
 import io.vertx.ext.web.Router
-import java.lang.Exception
 
 object CharacterRoutes : CustomRoutes {
     override fun defineRoutes(vertx: Vertx, client: JDBCClient): Router {
@@ -22,10 +20,6 @@ object CharacterRoutes : CustomRoutes {
             try {
                 val id = ctx.request().getParam("id").toInt()
                 CharacterLogic.getCharacterComplete { CharacterLogic.getById(id) }(client)
-                    .flatMap { c ->
-                        CharacteristicLogic.getAbilities()(client)
-                            .map { chs -> c?.addEmptyAbilities(chs.filter { x -> x.nature == "Conoscenza" }) }
-                    }
                     .catchToResponse(ctx)
             }
             catch (ex: Exception) {
@@ -58,11 +52,22 @@ object CharacterRoutes : CustomRoutes {
         router.post("/Character/Save").handler { ctx ->
             try {
                 val body = ctx.parseBody(UserCharacter::class.java)
-                ctx.getUserFromSession(client)
-                    .bind { userId ->
-                        CharacterLogic.save(body, userId)(client)
-                    }
-                    .catchToResponse(ctx)
+
+                if (body != null) {
+                    ctx.getUserFromSession(client)
+                        .bind { userId ->
+                            if (userId != null) {
+                                CharacterSaveLogic.save(body, userId)(client)
+                            }
+                            else {
+                                throw Exception("User not found!")
+                            }
+                        }
+                        .catchToResponse(ctx)
+                }
+                else {
+                    throw Exception("Body incomplete!")
+                }
             }
             catch (ex: Exception) {
                 ctx.mapToResponse(ex)

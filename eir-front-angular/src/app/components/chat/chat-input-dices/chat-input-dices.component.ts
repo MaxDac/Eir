@@ -6,6 +6,7 @@ import {Characteristic} from '../../../services/dtos/characteristic';
 import {DiceCallback} from '../chat-input/chat-input.component';
 import {CharacterService} from '../../../services/character.service';
 import {Character} from '../../../services/dtos/character';
+import {PageErrorHandlerService} from '../../../services/page-error-handler.service';
 
 enum ViewMode {
   CD,
@@ -25,7 +26,7 @@ export class ChatInputDicesComponent implements OnInit {
 
   selectedAttribute: number;
   selectedAbility: number;
-  cdClass = 20;
+  cdClass = 15;
   selectedCharacterId: number;
   selectedOpponentAttributeId: number;
   selectedOpponentAbilityId: number;
@@ -60,18 +61,19 @@ export class ChatInputDicesComponent implements OnInit {
     private bottomSheetRef: MatBottomSheetRef<ChatInputDicesComponent>,
     private provider: HelpService,
     private charactersProvider: CharacterService,
+    private errorHandler: PageErrorHandlerService,
     @Inject(MAT_BOTTOM_SHEET_DATA) public data: DiceCallback
   ) { }
 
   ngOnInit() {
     this.provider.getCharacteristics()
-      .subscribe(cs => this.attributes = cs);
+      .subscribe(x => this.errorHandler.handleError(x, cs => this.attributes = cs));
 
     this.provider.getAbilities()
-      .subscribe(abs => this.abilities = abs);
+      .subscribe(x => this.errorHandler.handleError(x, abs => this.abilities = abs));
 
     this.charactersProvider.getCharacterByRoomId(this.data.roomId)
-      .subscribe(cs => this.characters = cs);
+      .subscribe(x => this.errorHandler.handleError(x, cs => this.characters = cs));
   }
 
   changeView($event: MouseEvent) {
@@ -80,14 +82,11 @@ export class ChatInputDicesComponent implements OnInit {
 
   throwDice(event: MouseEvent) {
     if (!isNull(this.data) && !isNull(this.data.callback)) {
-      console.log('Not null!!');
       this.data.callback(this.data.self, {
         attributeId: this.selectedAttribute,
         abilityId: this.selectedAbility,
         cd: this.cdClass
       });
-    } else {
-      console.log('Null :(');
     }
 
     this.close(event);

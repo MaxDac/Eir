@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import {AuthenticationService} from '../../services/authentication.service';
 import {ActivatedRoute} from '@angular/router';
 import {ChatEntry} from '../../services/dtos/chat-entry';
-import {environment} from '../../../environments/environment';
-import {HttpWrapperService} from '../../services/http-wrapper.service';
 import {WebsocketWrapperService} from '../../services/websocket-wrapper.service';
 import {DiceThrow} from './chat-input/chat-input.component';
 
@@ -15,7 +13,7 @@ declare var EventBus: any;
   styleUrls: ['./chat.component.css']
 })
 export class ChatComponent implements OnInit {
-  private roomId: string;
+  roomId: string;
   private eventBus: any;
   currentValue: ChatEntry[];
 
@@ -64,12 +62,10 @@ export class ChatComponent implements OnInit {
       action: phrase
     };
 
-    console.log(`Sending ${JSON.stringify(request)}`);
     this.sendWebSocketRequest(request);
   }
 
   onSendDices(dices: DiceThrow) {
-    console.log(`receiving request: ${JSON.stringify(dices)}`);
     const characterId = this.authenticationService.retrieveStoredSession().characterId;
 
     const request = {
@@ -81,7 +77,6 @@ export class ChatComponent implements OnInit {
       cd: dices.cd
     };
 
-    console.log(`Sending ${JSON.stringify(request)}`);
     this.sendWebSocketRequest(request);
   }
 }

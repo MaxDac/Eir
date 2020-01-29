@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {AuthenticationService} from '../../services/authentication.service';
-import {Router} from '@angular/router';
+import {LogoutService} from '../../services/logout-service';
 
 @Component({
   selector: 'app-menu',
@@ -10,15 +9,13 @@ import {Router} from '@angular/router';
 export class MenuComponent implements OnInit {
 
   constructor(
-    private authenticationService: AuthenticationService,
-    private router: Router
+    private logoutService: LogoutService
   ) { }
 
   ngOnInit() {
   }
 
   logoff() {
-    this.authenticationService.deleteStoredSession();
-    this.router.navigate(['login']);
+    this.logoutService.logout();
   }
 }

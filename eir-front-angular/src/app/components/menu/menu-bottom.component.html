@@ -1,0 +1,60 @@
+<mat-toolbar color="primary">
+  <mat-toolbar-row style="padding: 0 0 0 0;">
+    <table class="menu-bottom-table">
+      <tr>
+        <td class="menu-bottom-button-container">
+          <a href="#" [routerLink]="['/sheet/selection']">
+            <div class="ref-container">
+              <mat-icon
+                class="example-icon"
+                aria-hidden="false"
+                aria-label="Example heart icon">
+                contacts
+              </mat-icon>
+              <div class="menu-bottom-button-description">Schede</div>
+            </div>
+          </a>
+        </td>
+        <td class="menu-bottom-button-container">
+          <a href="#" [routerLink]="['/forum']">
+            <div class="ref-container">
+              <mat-icon
+                class="example-icon"
+                aria-hidden="false"
+                aria-label="Example delete icon">
+                forum
+              </mat-icon>
+              <div class="menu-bottom-button-description">Forum</div>
+            </div>
+          </a>
+        </td>
+        <td class="menu-bottom-button-container">
+          <a href="#" [routerLink]="['/rooms']">
+            <div class="ref-container">
+              <mat-icon
+                class="example-icon"
+                aria-hidden="false"
+                aria-label="Example delete icon">
+                chat
+              </mat-icon>
+              <div class="menu-bottom-button-description">Chats</div>
+            </div>
+          </a>
+        </td>
+        <td class="menu-bottom-button-container">
+          <a href="javascript:void(0);" (click)="logoff()">
+            <div class="ref-container">
+              <mat-icon
+                class="example-icon"
+                aria-hidden="false"
+                aria-label="Example delete icon">
+                logout
+              </mat-icon>
+              <div class="menu-bottom-button-description">Logout</div>
+            </div>
+          </a>
+        </td>
+      </tr>
+    </table>
+  </mat-toolbar-row>
+</mat-toolbar>

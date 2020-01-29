@@ -16,12 +16,10 @@ export class CanActivateViaAuthGuard implements CanActivate {
     const session = this.authenticationService.retrieveStoredSession();
 
     if (session === null) {
-      console.log('No session!');
       this.router.navigate(['login']);
       return false;
     }
 
-    console.log('Session ok!');
     return true;
   }
 

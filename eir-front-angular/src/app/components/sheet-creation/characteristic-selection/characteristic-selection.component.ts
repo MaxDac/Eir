@@ -1,4 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {isNull} from '../../../helpers';
 
 @Component({
   selector: 'app-characteristic-selection',
@@ -6,6 +7,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
   styleUrls: ['./characteristic-selection.component.css']
 })
 export class CharacteristicSelectionComponent implements OnInit {
+  private internalDisablePlus: boolean;
 
   @Input()
   minValue: number;
@@ -17,7 +19,14 @@ export class CharacteristicSelectionComponent implements OnInit {
   name: string;
 
   @Input()
-  disablePlus: boolean;
+  set disablePlus(val: boolean) {
+    this.internalDisablePlus = val;
+  }
+
+  get disablePlus(): boolean {
+    const returnValue = isNull(this.internalDisablePlus) ? false : this.internalDisablePlus;
+    return returnValue;
+  }
 
   currentVal: number;
 
@@ -30,6 +39,14 @@ export class CharacteristicSelectionComponent implements OnInit {
     }
 
     return this.currentVal;
+  }
+
+  get minusDisabled(): boolean {
+    return isNull(this.currentVal) ? true : this.currentVal <= this.minValue;
+  }
+
+  get plusDisabled(): boolean {
+    return this.disablePlus || this.currentVal >= this.maxValue;
   }
 
   constructor() { }

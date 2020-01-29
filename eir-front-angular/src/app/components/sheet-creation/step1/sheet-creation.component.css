@@ -4,14 +4,13 @@
 }
 
 .formatted-control {
-  margin-top: 20px;
+  margin-top: 5px;
 }
 
 .centered-control-container {
-  margin-top: 25px;
+  margin-top: 5px;
   width: 100%;
   text-align: center;
-  border: 1px white solid;
 }
 
 .form-control {

@@ -48,7 +48,10 @@ import { SheetAttributeSelectorComponent } from './components/sheet/sheet-attrib
 import {WebsocketWrapperService} from './services/websocket-wrapper.service';
 import { SheetUpdateComponent } from './components/sheet/sheet-update/sheet-update.component';
 import { ChatInputDicesComponent } from './components/chat/chat-input-dices/chat-input-dices.component';
-import {StorageService} from './services/storage-service';
+import {StorageService} from './services/storage.service';
+import { MenuBottomComponent } from './components/menu/menu-bottom.component';
+import {LogoutService} from './services/logout-service';
+import {PageErrorHandlerService} from './services/page-error-handler.service';
 
 @NgModule({
   declarations: [
@@ -81,7 +84,8 @@ import {StorageService} from './services/storage-service';
     CharacterSelectorComponent,
     SheetAttributeSelectorComponent,
     SheetUpdateComponent,
-    ChatInputDicesComponent
+    ChatInputDicesComponent,
+    MenuBottomComponent
   ],
   entryComponents: [
     ChatInputDicesComponent
@@ -105,7 +109,9 @@ import {StorageService} from './services/storage-service';
     CanActivateViaAuthGuard,
     StorageService,
     CookieService,
-    ForumService
+    ForumService,
+    LogoutService,
+    PageErrorHandlerService
   ],
   bootstrap: [AppComponent]
 })

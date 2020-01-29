@@ -3,6 +3,9 @@ import {Character} from '../../services/dtos/character';
 import {CharacterService} from '../../services/character.service';
 import {AuthenticationService} from '../../services/authentication.service';
 import {isNull} from '../../helpers';
+import {MatSnackBar} from '@angular/material';
+import {isError} from '../../services/dtos/api-exception';
+import {PageErrorHandlerService} from '../../services/page-error-handler.service';
 
 enum CharacterSelectorComponentState {
   NORMAL,
@@ -29,11 +32,6 @@ export class CharacterSelectorComponent implements OnInit {
   }
 
   get showActivator(): boolean {
-    if (this.isSessionUserNull) {
-      console.log('session user is null!');
-    } else {
-      console.log('session user is not null!');
-    }
     return !this.isSessionUserNull && this.componentState === CharacterSelectorComponentState.NORMAL;
   }
 
@@ -52,7 +50,6 @@ export class CharacterSelectorComponent implements OnInit {
   }
 
   get characters(): Character[] {
-    console.log(`characters: ${JSON.stringify(this.chs)}`);
     return this.chs;
   }
 
@@ -67,7 +64,8 @@ export class CharacterSelectorComponent implements OnInit {
 
   constructor(
     private provider: CharacterService,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private errorHandler: PageErrorHandlerService
   ) { }
 
   ngOnInit() {
@@ -87,13 +85,13 @@ export class CharacterSelectorComponent implements OnInit {
 
     if (!isNull(uid)) {
       this.provider.getCharacterByUserId(uid)
-        .subscribe(cs => {
+        .subscribe(x => this.errorHandler.handleError(x, cs => {
           this.chs = cs;
 
           if (!isNull(this.chs) && this.chs.length !== 0) {
             this.changeSessionCharacterIfNull(this.chs);
           }
-        });
+        }));
     }
   }
 

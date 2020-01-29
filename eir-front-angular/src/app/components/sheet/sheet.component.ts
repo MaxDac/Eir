@@ -3,6 +3,7 @@ import {CharacterService} from '../../services/character.service';
 import {ActivatedRoute} from '@angular/router';
 import {Character, getCharacterVisualName} from '../../services/dtos/character';
 import {getCompleteRace} from '../sheet-creation/sheet-creation-helpers';
+import {PageErrorHandlerService} from '../../services/page-error-handler.service';
 
 @Component({
   selector: 'app-sheet',
@@ -22,17 +23,17 @@ export class SheetComponent implements OnInit {
 
   constructor(
     private service: CharacterService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private errorHandler: PageErrorHandlerService
   ) { }
 
   ngOnInit() {
     this.route.paramMap
       .map(x => x.get('id'))
       .flatMap(id => this.service.getCharacterById(Number(id)))
-      .subscribe(x => {
-        console.log(`character: ${JSON.stringify(x)}`);
+      .subscribe(y => this.errorHandler.handleError(y, x => {
         this.character = x;
-      });
+      }));
   }
 
 }

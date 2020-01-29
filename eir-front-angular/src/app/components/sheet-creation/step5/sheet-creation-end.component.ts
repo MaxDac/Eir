@@ -4,7 +4,7 @@ import {checkCharacterState, getCompleteRace, setCharacterState} from '../sheet-
 import {ActivatedRoute, Router} from '@angular/router';
 import {CharacterService} from '../../../services/character.service';
 import {Characteristic} from '../../../services/dtos/characteristic';
-import {StorageService} from '../../../services/storage-service';
+import {StorageService} from '../../../services/storage.service';
 
 @Component({
   selector: 'app-sheet-creation-end',
@@ -33,10 +33,8 @@ export class SheetCreationEndComponent implements OnInit {
 
   proceed() {
     const request = prepareForSave(this.character);
-    console.log(`Sending for save ${JSON.stringify(request)}`);
     this.client.saveCharacter(request)
       .subscribe(x => {
-        console.log(x);
         this.router.navigate(['']);
       });
   }

@@ -135,7 +135,9 @@
     </tr>
     <tr *ngFor="let p of character.perks">
       <td>
-        {{p.name}}
+        <div class="perk-container">
+          {{p.name}}
+        </div>
       </td>
     </tr>
   </table>

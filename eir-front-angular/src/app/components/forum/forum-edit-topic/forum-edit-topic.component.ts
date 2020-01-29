@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ForumService} from '../../../services/forum.service';
 import {ActivatedRoute, Router} from '@angular/router';
+import {PageErrorHandlerService} from '../../../services/page-error-handler.service';
 
 enum TopicOperation {
   CREATE,
@@ -21,7 +22,8 @@ export class ForumEditTopicComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private provider: ForumService,
-    private router: Router
+    private router: Router,
+    private errorHandler: PageErrorHandlerService
   ) { }
 
   ngOnInit() {
@@ -33,18 +35,16 @@ export class ForumEditTopicComponent implements OnInit {
         } else {
           this.operation = TopicOperation.MODIFY;
           this.id = Number(x.get('id'));
-          console.log(`The id is : ${this.id}`);
 
           this.provider.getTopic(this.id)
-            .subscribe(t => {
-              console.log(`The topic is: ${JSON.stringify(t)}`);
+            .subscribe(z => this.errorHandler.handleError(z, t => {
               this.topic = {
                 id: t.id,
                 sectionId: t.sectionId,
                 title: t.title,
                 description: t.description
               };
-            });
+            }));
         }
       });
   }

@@ -3,10 +3,9 @@ import {Characteristic, MartialAttribute, MentalAttribute} from '../../../servic
 import {Character} from '../../../services/dtos/character';
 import {HelpService} from '../../../services/help.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {tryGetState} from '../../../base/route-utils';
 import {checkCharacterState, divideCharacteristics, mapCharacteristicForSave, setCharacterState} from '../sheet-creation-helpers';
-import {CookieService} from 'ngx-cookie-service';
-import {StorageService} from '../../../services/storage-service';
+import {StorageService} from '../../../services/storage.service';
+import {PageErrorHandlerService} from '../../../services/page-error-handler.service';
 
 @Component({
   selector: 'app-sheet-creation-abilities',
@@ -39,16 +38,15 @@ export class SheetCreationAbilitiesComponent implements OnInit {
     private client: HelpService,
     private router: Router,
     private route: ActivatedRoute,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private errorHandler: PageErrorHandlerService
   ) { }
 
   ngOnInit(): void {
     this.character = checkCharacterState(this.storageService, this.router, 2);
 
     this.client.getAbilities()
-      .subscribe(x => {
-        this.characteristics = divideCharacteristics(x);
-      });
+      .subscribe(x => this.errorHandler.handleError(x, y => this.characteristics = y));
   }
 
   proceed() {

@@ -11,6 +11,14 @@ export class CharacteristicsSelectorComponent implements OnInit {
   @Input()
   characteristics: Characteristic[];
 
+  get martialCharacteristics(): Characteristic[] {
+    return this.characteristics.filter(x => x.type === 'Marziale');
+  }
+
+  get mentalCharacteristics(): Characteristic[] {
+    return this.characteristics.filter(x => x.type === 'Mentale');
+  }
+
   @Input()
   minValue: number;
 
@@ -23,8 +31,8 @@ export class CharacteristicsSelectorComponent implements OnInit {
   @Output()
   isCompleted = new EventEmitter<boolean>();
 
-  disableMartialPlus: boolean;
-  disableMentalPlus: boolean;
+  disableMartialPlus = false;
+  disableMentalPlus = false;
 
   get minimumValue(): number {
     return this.minValue === undefined ? 0 : this.minValue;

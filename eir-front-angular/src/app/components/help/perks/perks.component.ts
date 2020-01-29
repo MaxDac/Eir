@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Perk} from '../../../services/dtos/perk';
 import {HelpService} from '../../../services/help.service';
 import {isNull} from '../../../helpers';
+import {PageErrorHandlerService} from '../../../services/page-error-handler.service';
 
 @Component({
   selector: 'app-perks',
@@ -18,15 +19,16 @@ export class PerksComponent implements OnInit {
   }
 
   constructor(
-    private client: HelpService
+    private client: HelpService,
+    private errorHandler: PageErrorHandlerService
   ) { }
 
   ngOnInit() {
     this.client.getPerks()
-      .subscribe(p => {
+      .subscribe(x => this.errorHandler.handleError(x, p => {
         this.perks = p;
         this.loaded = true;
-      });
+      }));
   }
 
   hasAffectedCharacteristics(p: Perk) {

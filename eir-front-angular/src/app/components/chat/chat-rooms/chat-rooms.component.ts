@@ -4,6 +4,7 @@ import {CharacterService} from '../../../services/character.service';
 import {Router} from '@angular/router';
 import {Room} from '../../../services/dtos/room';
 import {ChatService} from '../../../services/chat.service';
+import {PageErrorHandlerService} from '../../../services/page-error-handler.service';
 
 @Component({
   selector: 'app-chat-rooms',
@@ -17,14 +18,13 @@ export class ChatRoomsComponent implements OnInit {
   constructor(
     private authenticationService: AuthenticationService,
     private service: ChatService,
-    private router: Router
+    private router: Router,
+    private errorHandler: PageErrorHandlerService
   ) { }
 
   ngOnInit() {
     this.service.getRooms()
-      .subscribe(cs => {
-        this.rooms = cs;
-      });
+      .subscribe(x => this.errorHandler.handleError(x, cs => this.rooms = cs));
   }
 
   select() {
