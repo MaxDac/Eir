@@ -63,6 +63,8 @@ export interface Character {
   photoUrl?: string;
   description?: string;
   background?: string;
+  experience?: number;
+  experienceSpent?: number;
   martialAttributes: Characteristic[] | null;
   mentalAttributes: Characteristic[] | null;
   martialAbilities: Characteristic[] | null;

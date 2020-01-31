@@ -1,5 +1,6 @@
 package com.eir.gdr.routes
 
+import com.eir.gdr.Constants
 import com.eir.gdr.db.Queries
 import com.eir.gdr.db.catchToResponse
 import com.eir.gdr.db.queryAsync
@@ -7,15 +8,17 @@ import com.eir.gdr.entities.CharacterType
 import com.eir.gdr.entities.Characteristic
 import com.eir.gdr.entities.Race
 import com.eir.gdr.logic.CharacteristicLogic
+import com.eir.gdr.logic.HelpLogic
 import com.eir.gdr.logic.PerksLogic
 import com.eir.gdr.logic.RaceLogic
+import io.netty.util.Constant
 import io.vertx.core.Vertx
 import io.vertx.ext.jdbc.JDBCClient
 import io.vertx.ext.web.Router
 
 object HelpRoutes : CustomRoutes {
-    val attributeNature = "Caratteristica";
-    val abilityNature = "Conoscenza";
+    val attributeNature = Constants.NATURE_ATTRIBUTE;
+    val abilityNature = Constants.NATURE_ABILITY;
 
     override fun defineRoutes(vertx: Vertx, client: JDBCClient): Router {
         val router = Router.router(vertx)
@@ -44,6 +47,11 @@ object HelpRoutes : CustomRoutes {
 
         router.get("/Perks").handler { ctx ->
             PerksLogic.getPerksWithEffects(client)
+                .catchToResponse(ctx)
+        }
+
+        router.get("/Powers").handler { ctx ->
+            HelpLogic.getPowers()(client)
                 .catchToResponse(ctx)
         }
 

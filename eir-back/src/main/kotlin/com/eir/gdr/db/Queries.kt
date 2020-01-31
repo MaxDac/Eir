@@ -1,5 +1,6 @@
 package com.eir.gdr.db
 
+import com.eir.gdr.Constants
 import com.eir.gdr.entities.character.UserCharacter
 
 object Queries {
@@ -42,6 +43,8 @@ object Queries {
                 "      ,Character.photo_url                  photo_url\n" +
                 "      ,Character.description                description\n" +
                 "      ,Character.background                 background\n" +
+                "      ,Character.experience                 experience\n" +
+                "      ,Character.experience_spent           experience_spent\n" +
                 "      ,CharacterTypes.id                    type_id\n" +
                 "      ,CharacterTypes.name                  type_name\n" +
                 "      ,Races.id                             father_race_id\n" +
@@ -82,14 +85,11 @@ object Queries {
         "   and ch.nature                                = '$nature'\n" +
         " order by ch.id, ch.nature"
 
-    val NATURE_ATTRIBUTE = "Caratteristica"
-    val NATURE_ABILITY = "Conoscenza"
-
     fun getCharacterAttributes(charId: Int) =
-        getCharacterCharacteristics(charId, NATURE_ATTRIBUTE)
+        getCharacterCharacteristics(charId, Constants.NATURE_ATTRIBUTE)
 
     fun getCharacterAbilities(charId: Int): String {
-        val query = getCharacterCharacteristics(charId, NATURE_ABILITY)
+        val query = getCharacterCharacteristics(charId, Constants.NATURE_ABILITY)
         println(query)
         return query
     }

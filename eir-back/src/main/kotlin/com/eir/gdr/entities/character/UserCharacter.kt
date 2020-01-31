@@ -1,5 +1,6 @@
 package com.eir.gdr.entities.character
 
+import com.eir.gdr.db.tryGetInt
 import com.eir.gdr.db.tryGetString
 import io.vertx.ext.sql.ResultSet
 
@@ -14,11 +15,14 @@ data class UserCharacter(
     var photoUrl: String? = null,
     var description: String? = null,
     var background: String? = null,
+    var experience: Int? = null,
+    var experienceSpent: Int? = null,
     var martialAttributes: List<UserCharacteristic>? = null,
     var mentalAttributes: List<UserCharacteristic>? = null,
     var martialAbilities: List<UserCharacteristic>? = null,
     var mentalAbilities: List<UserCharacteristic>? = null,
-    var perks: List<UserPerk>? = null
+    var perks: List<UserPerk>? = null,
+    var powers: List<UserPower>? = null
 ) {
     companion object {
         fun readCharacterMinimal(rs: ResultSet): List<UserCharacter> =
@@ -42,7 +46,9 @@ data class UserCharacter(
                     r.getInteger("has_modifiers") == 1,
                     r.tryGetString("photo_url"),
                     r.tryGetString("description"),
-                    r.tryGetString("background")
+                    r.tryGetString("background"),
+                    r.tryGetInt("experience"),
+                    r.tryGetInt("experienceSpent")
                 )
             }
     }
